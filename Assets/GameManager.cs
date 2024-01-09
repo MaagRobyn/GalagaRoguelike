@@ -41,10 +41,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShootProjectile(ProjectileType projectileType, Vector3 position, Team team, float damage, float velocity, float angle)
+    public void ShootProjectile(ProjectileType projectileType, Transform transform, Team team, float damage, float velocity, float angle)
     {
         var bulletTransform = new GameObject().transform;
-        bulletTransform.position = position;
+        bulletTransform.position = transform.position;
+        bulletTransform.rotation = transform.rotation;
 
         // Adjust for 90 degree skew
         //angle += 90;

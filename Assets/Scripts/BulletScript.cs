@@ -7,7 +7,7 @@ public class BulletScript : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
     private GameManager.ProjectileManager manager;
-    
+
     // Start is called before the first frame update
     void Start()
     {

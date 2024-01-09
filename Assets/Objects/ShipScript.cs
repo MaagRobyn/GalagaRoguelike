@@ -23,7 +23,7 @@ public abstract class ShipScript : MonoBehaviour
         {
             GameManager.Instance.ShootProjectile(
                 projectileType,
-                t.position,
+                t,
                 team,
                 bulletDmg,
                 bulletVelocity,
