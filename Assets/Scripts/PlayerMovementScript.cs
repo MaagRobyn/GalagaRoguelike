@@ -4,18 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMovementScript : MonoBehaviour
+public class PlayerMovementScript : ShipScript
 {
-    public static float bulletrate = .3f;
-
-    [SerializeField] Rigidbody2D rb;
-    [SerializeField] GameObject bullet;
-    [SerializeField] private float bulletTimer = 0;
-    [SerializeField] private float bulletSpeed = 10;
-    [SerializeField] private float bulletDamage = 1;
-    [SerializeField] List<Transform> cannons = new List<Transform>();
-
-    public float speed;
     public float rotationSpeed;
     float horizontal;
     float vertical;
@@ -25,7 +15,7 @@ public class PlayerMovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -36,37 +26,28 @@ public class PlayerMovementScript : MonoBehaviour
         jump = Input.GetAxisRaw("Jump");
         rotation = Input.GetAxisRaw("Rotation");
 
-        if(bulletTimer > 0)
+        if(projectileTimer > 0)
         {
-            bulletTimer -= Time.deltaTime;
+            projectileTimer -= Time.deltaTime;
         }
-        if(jump > 0 && bulletTimer < 0)
+        if(jump > 0 && projectileTimer <= 0)
         {
             var projectileType = GameManager.ProjectileType.Basic;
-            var bulletDmg = 1;
+            var bulletDmg = projectileDamage;
             var bulletVelocity = 10;
-
-            foreach(Transform t in cannons)
-            {
-                GameManager.Instance.ShootProjectile(
-                    projectileType, 
-                    t.position, 
-                    GameManager.Team.Player, 
-                    bulletDmg, 
-                    bulletVelocity, 
-                    rb.rotation
-                );
-
-            }
-            bulletTimer = bulletrate;
+            FireProjectile(projectileType, bulletDmg, bulletVelocity);
         }
     }
 
+
     private void FixedUpdate()
     {
-        var velocity = new Vector2(horizontal, vertical);
-        velocity.Normalize();
-        rb.velocity = velocity * speed;
+        var verticalVector = Tools.getUnitVector3(rb.rotation);
+        var horizontalVector = Tools.getUnitVector3(rb.rotation + 90);
+        rb.velocity = horizontal * verticalVector * speed + vertical * horizontalVector * speed;
+        //var velocity = new Vector2(horizontal, vertical);
+        //velocity.Normalize();
+        //rb.velocity = velocity * speed;
         rb.SetRotation(rb.rotation + rotation * rotationSpeed);
     }
 

@@ -14,8 +14,8 @@ public class BulletScript : MonoBehaviour
         // Get the information about itself
         manager = GameManager.Instance.bulletDict[gameObject.GetInstanceID()];
         rb.SetRotation(manager.angle);
-        // Shoot projectile
-        var unitVector = Tools.getUnitVector3(manager.angle);
+        // Shoot projectile and adjust for 90 degree angle
+        var unitVector = Tools.getUnitVector3(manager.angle + 90);
         rb.AddForce(unitVector * manager.velocity);
     }
 
@@ -31,12 +31,13 @@ public class BulletScript : MonoBehaviour
         if (manager.owningTeam == GameManager.Team.Player && collision.gameObject.layer != 6)
         {
             Destroy(gameObject);
-            Debug.Log("Destroyed bullet");
+            //Debug.Log("Destroyed bullet");
         }
         else if (manager.owningTeam == GameManager.Team.Alien && collision.gameObject.layer != 7)
         {
             Destroy(gameObject);
-            Debug.Log("Destroyed bullet");
+            //Debug.Log("Destroyed bullet");
         }
+
     }
 }

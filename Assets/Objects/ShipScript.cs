@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class ShipScript : MonoBehaviour
+{
+    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected List<Transform> cannons = new();
+
+    [SerializeField] protected GameObject projectile;
+    [SerializeField] protected float projectileTimer = 0;
+    [SerializeField] protected float projectileSpeed = 10;
+    [SerializeField] protected float projectileDamage = 1;
+
+    [SerializeField] protected float health = 100f;
+    [SerializeField] protected float fireRate;
+    [SerializeField] protected float speed;
+    [SerializeField] protected GameManager.Team team;
+
+    protected void FireProjectile(GameManager.ProjectileType projectileType, float bulletDmg, int bulletVelocity)
+    {
+        foreach (Transform t in cannons)
+        {
+            GameManager.Instance.ShootProjectile(
+                projectileType,
+                t.position,
+                team,
+                bulletDmg,
+                bulletVelocity,
+                rb.rotation
+            );
+
+        }
+        projectileTimer = fireRate;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if(health < 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+}
