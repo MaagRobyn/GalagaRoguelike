@@ -33,10 +33,10 @@ public abstract class ShipScript : MonoBehaviour
         projectileTimer = fireRate;
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         health -= damage;
-        if(health < 0)
+        if(health <= 0)
         {
             Destroy(gameObject);
         }

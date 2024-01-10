@@ -53,7 +53,7 @@ public class PlayerMovementScript : ShipScript
         rb.SetRotation(rb.rotation + rotation * rotationSpeed);
     }
 
-    public new void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
         Debug.Log(health);
