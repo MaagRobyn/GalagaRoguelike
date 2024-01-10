@@ -7,7 +7,6 @@ public abstract class ShipScript : MonoBehaviour
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected List<Transform> cannons = new();
 
-    [SerializeField] protected GameObject projectile;
     [SerializeField] protected float projectileTimer = 0;
     [SerializeField] protected float projectileSpeed = 10;
     [SerializeField] protected float projectileDamage = 1;
@@ -15,7 +14,7 @@ public abstract class ShipScript : MonoBehaviour
     [SerializeField] protected float health = 100f;
     [SerializeField] protected float fireRate;
     [SerializeField] protected float speed;
-    [SerializeField] protected GameManager.Team team;
+    [SerializeField] public GameManager.Team team;
 
     protected void FireProjectile(GameManager.ProjectileType projectileType, float bulletDmg, int bulletVelocity)
     {

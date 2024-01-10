@@ -21,7 +21,7 @@ public class AlienShipScript : ShipScript
         {
             var projectileType = GameManager.ProjectileType.Basic;
 
-            var dmg = 1;
+            var dmg = 20;
             var velocity = 10;
             FireProjectile(projectileType, dmg, velocity);
         }

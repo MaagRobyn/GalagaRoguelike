@@ -28,16 +28,12 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (manager.owningTeam == GameManager.Team.Player && collision.gameObject.layer != 6)
+        var ship = collision.gameObject.GetComponent<ShipScript>();
+        if(ship != null && manager.owningTeam != ship.team)
         {
+            ship.TakeDamage(manager.damage);
             Destroy(gameObject);
             //Debug.Log("Destroyed bullet");
         }
-        else if (manager.owningTeam == GameManager.Team.Alien && collision.gameObject.layer != 7)
-        {
-            Destroy(gameObject);
-            //Debug.Log("Destroyed bullet");
-        }
-
     }
 }

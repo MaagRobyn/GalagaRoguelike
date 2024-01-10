@@ -51,7 +51,7 @@ MonoBehaviour:
   rb: {fileID: 9007604034946557565}
   cannons:
   - {fileID: 8806823238610959169}
-  projectile: {fileID: 0}
+  projectile: {fileID: 8364276607121668643, guid: 6ce8c16315ef0ad48a7dd2526b56d607, type: 3}
   projectileTimer: 0
   projectileSpeed: 10
   projectileDamage: 1
