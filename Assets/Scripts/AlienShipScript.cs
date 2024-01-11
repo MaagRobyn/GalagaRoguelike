@@ -21,8 +21,8 @@ public class AlienShipScript : ShipScript
         {
             var projectileType = GameManager.ProjectileType.Basic;
 
-            var dmg = 20;
-            var velocity = 10;
+            var dmg = projectileDamage;
+            var velocity = projectileSpeed;
             FireProjectile(projectileType, dmg, velocity);
         }
         projectileTimer -= 0.5f * Time.deltaTime;
@@ -34,9 +34,18 @@ public class AlienShipScript : ShipScript
 
         //forceVector.Normalize();
         //rb.AddForce(forceVector * Time.deltaTime * speed);
-        var target = GameManager.Instance.player.transform.position;
+        var target = GameManager.PlayerTransform.position;
         //print(target);
         rb.position = Vector2.Lerp(transform.position, target, speed / 1000);
 
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

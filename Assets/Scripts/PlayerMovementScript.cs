@@ -13,10 +13,12 @@ public class PlayerMovementScript : ShipScript
     float jump;
     float rotation;
     [SerializeField] Slider healthbar;
+    [SerializeField] SpriteRenderer playerSprite;
 
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.PlayerTransform = transform;
         healthbar.value = health;
     }
 
@@ -44,20 +46,28 @@ public class PlayerMovementScript : ShipScript
 
     private void FixedUpdate()
     {
-        var verticalVector = Tools.getUnitVector3(rb.rotation);
-        var horizontalVector = Tools.getUnitVector3(rb.rotation + 90);
-        rb.velocity = horizontal * verticalVector * speed + vertical * horizontalVector * speed;
-        //var velocity = new Vector2(horizontal, vertical);
-        //velocity.Normalize();
-        //rb.velocity = velocity * speed;
-        rb.SetRotation(rb.rotation + rotation * rotationSpeed);
+        if(health > 0)
+        {
+            var verticalVector = Tools.getUnitVector3(rb.rotation);
+            var horizontalVector = Tools.getUnitVector3(rb.rotation + 90);
+            rb.velocity = horizontal * speed * verticalVector + speed * vertical * horizontalVector;
+            //var velocity = new Vector2(horizontal, vertical);
+            //velocity.Normalize();
+            //rb.velocity = velocity * speed;
+            rb.SetRotation(rb.rotation + rotation * rotationSpeed);
+        }
+
     }
 
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
-        Debug.Log(health);
         healthbar.value = health;
+        if(health <= 0)
+        {
+            healthbar.enabled = false;
+            playerSprite.enabled = false;
+        }
     }
 
 

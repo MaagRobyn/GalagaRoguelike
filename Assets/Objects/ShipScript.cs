@@ -16,7 +16,7 @@ public abstract class ShipScript : MonoBehaviour
     [SerializeField] protected float speed;
     [SerializeField] public GameManager.Team team;
 
-    protected void FireProjectile(GameManager.ProjectileType projectileType, float bulletDmg, int bulletVelocity)
+    protected void FireProjectile(GameManager.ProjectileType projectileType, float bulletDmg, float bulletVelocity)
     {
         foreach (Transform t in cannons)
         {
@@ -36,9 +36,5 @@ public abstract class ShipScript : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         health -= damage;
-        if(health <= 0)
-        {
-            Destroy(gameObject);
-        }
     }
 }

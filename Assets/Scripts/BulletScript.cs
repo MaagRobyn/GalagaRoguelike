@@ -29,11 +29,12 @@ public class BulletScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var ship = collision.gameObject.GetComponent<ShipScript>();
-        if(ship != null && manager.owningTeam != ship.team)
+        if(ship != null)
         {
             ship.TakeDamage(manager.damage);
             Destroy(gameObject);
-            //Debug.Log("Destroyed bullet");
+
         }
+        //Debug.Log("Destroyed bullet");
     }
 }

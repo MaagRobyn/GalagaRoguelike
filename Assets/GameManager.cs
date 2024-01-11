@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +6,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public Dictionary<int, ProjectileManager> bulletDict = new Dictionary<int, ProjectileManager>();
-    public Dictionary<int, ShipScript> damagableDict = new Dictionary<int, ShipScript>();
-    [SerializeField] public ShipScript player;
+    public Dictionary<int, ProjectileManager> bulletDict = new();
+    public Dictionary<int, ShipScript> damagableDict = new();
+    public static Transform PlayerTransform;
 
     //[SerializeField] Dictionary<ProjectileType, GameObject> projectiles = new Dictionary<ProjectileType, GameObject>();
     //[SerializeField] Dictionary<AlienType, GameObject> aliens = new Dictionary<AlienType, GameObject>();
     [SerializeField] GameObject basicProjectile;
     [SerializeField] ShipScript basicAlien;
+    [SerializeField] Canvas canvas;
+    [SerializeField] RadarScript radar;
+    [SerializeField] Transform radarHolder;
 
     float spawnDelay = 1.0f;
     int maxAliens = 2;
@@ -20,7 +24,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        damagableDict.Add(player.GetInstanceID(), player);
     }
 
     // Update is called once per frame
@@ -30,27 +33,36 @@ public class GameManager : MonoBehaviour
         {
             spawnDelay -= Time.deltaTime;
         }
-        if(damagableDict.Count < maxAliens && spawnDelay <= 0) 
+        if(damagableDict.Count < maxAliens && spawnDelay <= 0)
         {
-            var tmp = new GameObject();
-            var randomNum = Random.Range(-10, 10);
-            tmp.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum,10), transform.rotation);
-            var alien = Instantiate(basicAlien, tmp.transform);
-            damagableDict.Add(alien.GetInstanceID(), alien);
-            spawnDelay = 1.0f;
+            SpawnAlien();
         }
+    }
+
+    private void SpawnAlien()
+    {
+        var tmp = new GameObject();
+        var randomNum = Random.Range(-10, 10);
+        var alien = Instantiate(basicAlien);
+        alien.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
+        damagableDict.Add(alien.GetInstanceID(), alien);
+        var radarObj = Instantiate(radar, radarHolder);
+        radarObj.matchingShip = alien;
+        spawnDelay = 1.0f;
     }
 
     public void ShootProjectile(ProjectileType projectileType, Transform transform, Team team, float damage, float velocity, float angle)
     {
-        var bulletTransform = new GameObject().transform;
-        bulletTransform.position = transform.position;
-        bulletTransform.rotation = transform.rotation;
-
         // Adjust for 90 degree skew
         //angle += 90;
 
-        var projectileObj = Instantiate(basicProjectile, bulletTransform);
+        var projectileObj = Instantiate(basicProjectile);
+        projectileObj.transform.position = transform.position;
+        projectileObj.transform.rotation = transform.rotation;
+        projectileObj.name = "Projectile";
+        projectileObj.layer = 9 + (int)team;
+
+
         bulletDict.Add(projectileObj.GetInstanceID(), new ProjectileManager() 
         { 
             type = projectileType,

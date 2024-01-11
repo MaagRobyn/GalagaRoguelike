@@ -51,15 +51,14 @@ MonoBehaviour:
   rb: {fileID: 9007604034946557565}
   cannons:
   - {fileID: 8806823238610959169}
-  projectile: {fileID: 8364276607121668643, guid: 6ce8c16315ef0ad48a7dd2526b56d607, type: 3}
   projectileTimer: 0
   projectileSpeed: 10
-  projectileDamage: 1
-  health: 3
+  projectileDamage: 20
+  health: 30
   fireRate: 1
   speed: 20
   team: 1
-  Player: {fileID: 7316189464969775122, guid: dc65957526016ac4796997db8d6a9292, type: 3}
+  Player: {fileID: 6316703756104425051, guid: a77c563724d2f5c429041ec27c81e50b, type: 3}
 --- !u!50 &9007604034946557565
 Rigidbody2D:
   serializedVersion: 4
@@ -82,7 +81,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -127,7 +126,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
   m_Color: {r: 0, g: 0.7058824, b: 0.24587822, a: 1}
   m_FlipX: 0
