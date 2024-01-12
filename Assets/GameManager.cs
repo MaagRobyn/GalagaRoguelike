@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public Dictionary<int, ProjectileManager> bulletDict = new();
     public Dictionary<int, ShipScript> damagableDict = new();
-    public static Transform PlayerTransform;
+    public Transform PlayerTransform;
 
     //[SerializeField] Dictionary<ProjectileType, GameObject> projectiles = new Dictionary<ProjectileType, GameObject>();
     //[SerializeField] Dictionary<AlienType, GameObject> aliens = new Dictionary<AlienType, GameObject>();

@@ -34,7 +34,7 @@ public class AlienShipScript : ShipScript
 
         //forceVector.Normalize();
         //rb.AddForce(forceVector * Time.deltaTime * speed);
-        var target = GameManager.PlayerTransform.position;
+        var target = GameManager.Instance.PlayerTransform.position;
         //print(target);
         rb.position = Vector2.Lerp(transform.position, target, speed / 1000);
 

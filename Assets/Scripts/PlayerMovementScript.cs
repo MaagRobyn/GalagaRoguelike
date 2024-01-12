@@ -18,13 +18,13 @@ public class PlayerMovementScript : ShipScript
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.PlayerTransform = transform;
         healthbar.value = health;
     }
 
     // Update is called once per frame
     void Update()
     {
+        GameManager.Instance.PlayerTransform = gameObject.transform;
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         jump = Input.GetAxisRaw("Jump");

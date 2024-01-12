@@ -16,7 +16,17 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
+            if (matchingShip == null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                var angles = Vector3.forward * Vector2.Angle(GameManager.Instance.PlayerTransform.position, matchingShip.transform.position);
 
+                transform.eulerAngles = angles;
+
+            }
         }
     }
 }
