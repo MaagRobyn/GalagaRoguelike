@@ -12,6 +12,7 @@ public class PlayerMovementScript : ShipScript
     float vertical;
     float jump;
     float rotation;
+
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
 
@@ -39,7 +40,7 @@ public class PlayerMovementScript : ShipScript
             var projectileType = GameManager.ProjectileType.Basic;
             var bulletDmg = projectileDamage;
             var bulletVelocity = 10;
-            FireProjectile(projectileType, bulletDmg, bulletVelocity);
+            ShootProjectile(projectileType, bulletDmg, bulletVelocity);
         }
     }
 

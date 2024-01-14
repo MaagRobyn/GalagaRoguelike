@@ -6,11 +6,26 @@ using UnityEngine;
 public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
+    public AlienType type;
+
+    public enum AlienType
+    {
+        Basic = 0
+    }
+    private FlightPattern flightPattern;
+    enum FlightPattern
+    {
+        Wander,
+        Chase,
+        Cruise,
+        Drone
+    }
     
     // Start is called before the first frame update
     void Start()
     {
         fireRate = 1;
+        flightPattern = FlightPattern.Chase;
     }
 
     // Update is called once per frame
@@ -23,22 +38,35 @@ public class AlienShipScript : ShipScript
 
             var dmg = projectileDamage;
             var velocity = projectileSpeed;
-            FireProjectile(projectileType, dmg, velocity);
+            ShootProjectile(projectileType, dmg, velocity);
         }
         projectileTimer -= 0.5f * Time.deltaTime;
     }
 
     private void FixedUpdate()
     {
-        //var forceVector = -(gameObject.transform.position - StaticPlayerObj.transform.position + new Vector3(0, -5));
+        if(flightPattern == FlightPattern.Chase)
+        {
+            //var forceVector = -(gameObject.transform.position - StaticPlayerObj.transform.position + new Vector3(0, -5));
 
-        //forceVector.Normalize();
-        //rb.AddForce(forceVector * Time.deltaTime * speed);
-        var target = GameManager.Instance.PlayerTransform.position;
-        //print(target);
-        rb.position = Vector2.Lerp(transform.position, target, speed / 1000);
+            //forceVector.Normalize();
+            //rb.AddForce(forceVector * Time.deltaTime * speed);
+            var target = GameManager.Instance.PlayerTransform;
+            //print(target);
+            var lerpFactor = 1000;
+            rb.position = Vector2.Lerp(transform.position, target.position, speed / lerpFactor);
+
+            //var angle = Vector2.Angle(target.position, transform.position);
+            //Debug.Log(angle);
+            float angle = Tools.FindAngleBetweenTwoTransforms(transform, target); 
+            rb.SetRotation(angle);
+
+            //Debug.DrawLine(transform.position, target.position, Color.red);
+
+        }
 
     }
+
 
     public override void TakeDamage(float damage)
     {

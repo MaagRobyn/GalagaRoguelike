@@ -14,9 +14,11 @@ public abstract class ShipScript : MonoBehaviour
     [SerializeField] protected float health = 100f;
     [SerializeField] protected float fireRate;
     [SerializeField] protected float speed;
-    [SerializeField] public GameManager.Team team;
+    
+    public float dangerLevel;
+    public GameManager.Team team;
 
-    protected void FireProjectile(GameManager.ProjectileType projectileType, float bulletDmg, float bulletVelocity)
+    protected void ShootProjectile(GameManager.ProjectileType projectileType, float bulletDmg, float bulletVelocity)
     {
         foreach (Transform t in cannons)
         {

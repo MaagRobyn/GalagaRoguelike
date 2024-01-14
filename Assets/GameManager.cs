@@ -1,29 +1,37 @@
 using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public Dictionary<int, ProjectileManager> bulletDict = new();
-    public Dictionary<int, ShipScript> damagableDict = new();
     public Transform PlayerTransform;
+    public float bounty = 0;
+    private float currentDangerLevel;
+    private List<ShipScript> existingShips = new();
+    private EncounterType encounterType;
 
     //[SerializeField] Dictionary<ProjectileType, GameObject> projectiles = new Dictionary<ProjectileType, GameObject>();
     //[SerializeField] Dictionary<AlienType, GameObject> aliens = new Dictionary<AlienType, GameObject>();
     [SerializeField] GameObject basicProjectile;
-    [SerializeField] ShipScript basicAlien;
+    [SerializeField] AlienShipScript basicAlien;
     [SerializeField] Canvas canvas;
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
+    [SerializeField] TextMeshProUGUI bountyText;
 
     float spawnDelay = 1.0f;
-    int maxAliens = 2;
+    bool roundHasEnded = false;
+    bool roundCanEnd = false;
 
     void Start()
     {
         Instance = this;
+        AddBounty(5.0f);
+        encounterType = EncounterType.Endless;
     }
 
     // Update is called once per frame
@@ -33,22 +41,67 @@ public class GameManager : MonoBehaviour
         {
             spawnDelay -= Time.deltaTime;
         }
-        if(damagableDict.Count < maxAliens && spawnDelay <= 0)
+        if(currentDangerLevel < bounty && spawnDelay <= 0)
         {
-            SpawnAlien();
+            var alienShip = SpawnAlien(basicAlien);
+            existingShips.Add(alienShip);
         }
+        if(!roundCanEnd && currentDangerLevel >= bounty)
+        {
+            roundCanEnd = true;
+        }
+        for(int i = 0; i < existingShips.Count; i++)
+        {
+            if (existingShips[i] == null)
+            {
+                existingShips.Remove(existingShips[i]);
+                i--;
+            }
+        }
+        if(roundCanEnd && existingShips.Count == 0 && !roundHasEnded)
+        {
+            roundHasEnded = true;
+            Debug.Log("Round finished");
+            switch (encounterType)
+            {
+                case EncounterType.Endless:
+                    spawnDelay = 5;
+                    roundHasEnded = false;
+                    roundCanEnd = false;
+                    currentDangerLevel = 0;
+                    AddBounty(1.0f);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     }
 
-    private void SpawnAlien()
+    private void AddBounty(float bountyIncrease)
     {
-        var tmp = new GameObject();
+        bounty += bountyIncrease;
+        bountyText.text = $"${bounty * 10}00";
+    }
+
+    private AlienShipScript SpawnAlien(AlienShipScript shipToSpawn)
+    {
         var randomNum = Random.Range(-10, 10);
-        var alien = Instantiate(basicAlien);
-        alien.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
-        damagableDict.Add(alien.GetInstanceID(), alien);
+        switch (shipToSpawn.type)
+        {
+            case AlienShipScript.AlienType.Basic:
+                currentDangerLevel += 1;
+                break;
+            default:
+                Debug.LogError("Attempted to spawn and alien of an unkown type");
+                break;
+        }
+        var alienShip = Instantiate(shipToSpawn);
+        alienShip.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
         var radarObj = Instantiate(radar, radarHolder);
-        radarObj.matchingShip = alien;
+        radarObj.matchingShip = alienShip;
         spawnDelay = 1.0f;
+        return alienShip;
     }
 
     public void ShootProjectile(ProjectileType projectileType, Transform transform, Team team, float damage, float velocity, float angle)
@@ -91,8 +144,9 @@ public class GameManager : MonoBehaviour
         Player = 0,
         Alien = 1
     }
-    public enum AlienType
+    private enum EncounterType
     {
-        Basic = 0
+        Endless,
+        Basic
     }
 }

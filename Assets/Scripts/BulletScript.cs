@@ -28,8 +28,7 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        var ship = collision.gameObject.GetComponent<ShipScript>();
-        if(ship != null)
+        if(collision.gameObject.TryGetComponent<ShipScript>(out var ship))
         {
             ship.TakeDamage(manager.damage);
             Destroy(gameObject);
