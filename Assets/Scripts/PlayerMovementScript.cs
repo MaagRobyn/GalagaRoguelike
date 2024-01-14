@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerMovementScript : ShipScript
@@ -15,6 +16,8 @@ public class PlayerMovementScript : ShipScript
 
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
+
+    float respawnTimer = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +33,18 @@ public class PlayerMovementScript : ShipScript
         vertical = Input.GetAxisRaw("Vertical");
         jump = Input.GetAxisRaw("Jump");
         rotation = Input.GetAxisRaw("Rotation");
+
+        if (!playerSprite.enabled)
+        {
+            if(respawnTimer <= 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                respawnTimer -= Time.deltaTime;
+            }
+        }
 
         if(projectileTimer > 0)
         {

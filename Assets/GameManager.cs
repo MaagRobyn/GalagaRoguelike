@@ -2,6 +2,7 @@ using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -37,6 +38,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetAxisRaw("Close") == 1)
+        {
+            Debug.Log("Quitting Game");
+            Application.Quit();
+        }
         if(spawnDelay > 0)
         {
             spawnDelay -= Time.deltaTime;
@@ -125,6 +131,15 @@ public class GameManager : MonoBehaviour
             angle = angle
         });
         //Debug.Log("bullet shot");
+    }
+    public void ResetLevel()
+    {
+        for(int i = 0; i < existingShips.Count;)
+        {
+            Destroy(existingShips[i]);
+            bounty = 0;
+            AddBounty(5);
+        }
     }
 
     public class ProjectileManager

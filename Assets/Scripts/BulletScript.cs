@@ -34,6 +34,13 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
 
         }
+        else if(collision.gameObject.TryGetComponent<BulletScript>(out var bullet))
+        {
+            if(bullet.manager.owningTeam != manager.owningTeam)
+            {
+                Destroy(gameObject);
+            }
+        }
         //Debug.Log("Destroyed bullet");
     }
 }
