@@ -7,6 +7,7 @@ public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
     public AlienType type;
+    private const int LERPFACTOR = 2000;
 
     public enum AlienType
     {
@@ -45,24 +46,15 @@ public class AlienShipScript : ShipScript
 
     private void FixedUpdate()
     {
-        if(flightPattern == FlightPattern.Chase)
+        switch (flightPattern)
         {
-            //var forceVector = -(gameObject.transform.position - StaticPlayerObj.transform.position + new Vector3(0, -5));
+            case FlightPattern.Chase:
+                var target = GameManager.Instance.PlayerTransform;
+                rb.position = Vector2.Lerp(transform.position, target.position, speed / LERPFACTOR);
 
-            //forceVector.Normalize();
-            //rb.AddForce(forceVector * Time.deltaTime * speed);
-            var target = GameManager.Instance.PlayerTransform;
-            //print(target);
-            var lerpFactor = 1000;
-            rb.position = Vector2.Lerp(transform.position, target.position, speed / lerpFactor);
-
-            //var angle = Vector2.Angle(target.position, transform.position);
-            //Debug.Log(angle);
-            float angle = Tools.FindAngleBetweenTwoTransforms(transform, target); 
-            rb.SetRotation(angle);
-
-            //Debug.DrawLine(transform.position, target.position, Color.red);
-
+                float angle = Tools.FindAngleBetweenTwoTransforms(transform, target); 
+                rb.SetRotation(angle);
+                break;
         }
 
     }
