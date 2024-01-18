@@ -55,7 +55,10 @@ public class PlayerMovementScript : ShipScript
             var projectileType = GameManager.ProjectileType.Basic;
             var bulletDmg = projectileDamage;
             var bulletVelocity = 10;
-            ShootProjectile(projectileType, bulletDmg, bulletVelocity);
+            if(health >  0)
+            {
+                ShootProjectile(projectileType, bulletDmg, bulletVelocity);
+            }
         }
     }
 

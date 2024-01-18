@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Tools
 {
+    public class SceneConstants
+    {
+        public const string GAME_SCENE = "GalagaTestScreen";
+        public const string MENU_SCENE = "Menu";
+
+    }
+
     public static Vector2 getUnitVector2(float rotation)
     {
         var angleRadians = rotation * Mathf.Deg2Rad;
