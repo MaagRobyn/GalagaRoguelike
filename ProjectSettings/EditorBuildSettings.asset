@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 676a83248f229df4cacf16d8b9c3a153
+  - enabled: 1
     path: Assets/Scenes/GalagaTestScreen.unity
     guid: a0891a7b8817e9f41929451df405bf60
   m_configObjects: {}
