@@ -10,8 +10,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
     public Dictionary<int, ProjectileManager> bulletDict = new();
-    public Transform PlayerTransform;
+    public PlayerMovementScript Player;
     public float bounty = 0;
     private float currentDangerLevel;
     private List<ShipScript> existingShips = new();
@@ -24,10 +25,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
     [SerializeField] TextMeshProUGUI bountyText;
+    [SerializeField] GameObject deathscreen;
 
     float spawnDelay = 1.0f;
     bool roundHasEnded = false;
     bool roundCanEnd = false;
+
+    float deathScreenTimer = 3.0f;
+    bool playerHasDied = false;
+    bool playerDeathEventHasBeenSet = false;
 
     void Start()
     {
@@ -35,30 +41,46 @@ public class GameManager : MonoBehaviour
         AddBounty(5.0f);
         encounterType = EncounterType.Basic;
     }
-
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetAxisRaw("Close") == 1)
+        if (!playerDeathEventHasBeenSet && Player != null)
+        {
+            Player.PlayerDied += () =>
+            {
+                playerHasDied = true;
+            };
+        }
+        if (Input.GetAxisRaw("Close") == 1)
         {
             Debug.Log("Quitting Game");
             Application.Quit();
         }
-        
-        if(spawnDelay > 0)
+        if (playerHasDied)
+        {
+            if (deathScreenTimer <= 0)
+            {
+                deathscreen.SetActive(true);
+            }
+            else
+            {
+                deathScreenTimer -= Time.deltaTime;
+            }
+        }
+        if (spawnDelay > 0)
         {
             spawnDelay -= Time.deltaTime;
         }
-        if(currentDangerLevel < bounty && spawnDelay <= 0)
+        if (currentDangerLevel < bounty && spawnDelay <= 0)
         {
             var alienShip = SpawnAlien(basicAlien);
             existingShips.Add(alienShip);
         }
-        if(!roundCanEnd && currentDangerLevel >= bounty)
+        if (!roundCanEnd && currentDangerLevel >= bounty)
         {
             roundCanEnd = true;
         }
-        for(int i = 0; i < existingShips.Count; i++)
+        for (int i = 0; i < existingShips.Count; i++)
         {
             if (existingShips[i] == null)
             {
@@ -66,7 +88,7 @@ public class GameManager : MonoBehaviour
                 i--;
             }
         }
-        if(roundCanEnd && existingShips.Count == 0 && !roundHasEnded)
+        if (roundCanEnd && existingShips.Count == 0 && !roundHasEnded)
         {
             roundHasEnded = true;
             Debug.Log("Round finished");
@@ -91,7 +113,7 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
-        
+
     }
     private void OpenMenu(int rewardCount)
     {
@@ -102,11 +124,11 @@ public class GameManager : MonoBehaviour
             Subtitle = "Gives you 10% speed boost"
         };
         rewards.Add(crewMember);
-        
+
         var baseTransform = new GameObject().transform;
         var buttons = new List<Button>();
         float spacing = rewardMenu.rect.height / rewardCount + 1;
-        for(int i = 0; i < rewardCount; i++)
+        for (int i = 0; i < rewardCount; i++)
         {
             var reward = rewards[Random.Range(0, rewards.Count - 1)];
             var transform = rewardMenu.transform;
@@ -114,7 +136,7 @@ public class GameManager : MonoBehaviour
             var button = Instantiate(optionButton, transform);
             buttons.Add(button);
             var textBoxes = button.GetComponentsInChildren<TextMeshPro>();
-            foreach(var textBox in textBoxes)                                      
+            foreach (var textBox in textBoxes)
             {
                 if (textBox.gameObject.name.ToLower().Contains("subtitle"))
                 {
@@ -127,7 +149,7 @@ public class GameManager : MonoBehaviour
             }
             button.onClick.AddListener(() =>
             {
-                while(buttons.Count > 0)
+                while (buttons.Count > 0)
                 {
                     Destroy(buttons[0]);
                 }
@@ -170,8 +192,8 @@ public class GameManager : MonoBehaviour
         projectileObj.layer = 9 + (int)team;
 
 
-        bulletDict.Add(projectileObj.GetInstanceID(), new ProjectileManager() 
-        { 
+        bulletDict.Add(projectileObj.GetInstanceID(), new ProjectileManager()
+        {
             type = projectileType,
             owningTeam = team,
             damage = damage,
@@ -182,7 +204,7 @@ public class GameManager : MonoBehaviour
     }
     public void ResetLevel()
     {
-        for(int i = 0; i < existingShips.Count;)
+        for (int i = 0; i < existingShips.Count;)
         {
             Destroy(existingShips[i]);
             bounty = 0;

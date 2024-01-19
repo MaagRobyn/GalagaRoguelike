@@ -22,8 +22,8 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
-            var distance = Vector3.Distance(matchingShip.transform.position, GameManager.Instance.PlayerTransform.position);
-            Debug.Log(distance);
+            var distance = Vector3.Distance(matchingShip.transform.position, GameManager.Instance.Player.transform.position);
+            //Debug.Log(distance);
             if(radar.enabled && distance <= RADAR_RADIUS)
             {
                 radar.enabled = false;
@@ -42,7 +42,7 @@ namespace Assets.Scripts
             }
             else
             {
-                var playerTransform = GameManager.Instance.PlayerTransform;
+                var playerTransform = GameManager.Instance.Player.transform;
 
                 var angle = Tools.FindAngleBetweenTwoTransforms(playerTransform, matchingShip.transform);
                 var angles = (Vector3.forward * angle) - playerTransform.eulerAngles;

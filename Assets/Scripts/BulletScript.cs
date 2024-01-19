@@ -28,15 +28,15 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent<ShipScript>(out var ship))
+        if (collision.gameObject.TryGetComponent<ShipScript>(out var ship))
         {
             ship.TakeDamage(manager.damage);
             Destroy(gameObject);
 
         }
-        else if(collision.gameObject.TryGetComponent<BulletScript>(out var bullet))
+        else if (collision.gameObject.TryGetComponent<BulletScript>(out var bullet))
         {
-            if(bullet.manager.owningTeam != manager.owningTeam)
+            if (bullet.manager.owningTeam != manager.owningTeam)
             {
                 Destroy(gameObject);
             }

@@ -14,7 +14,7 @@ public abstract class ShipScript : MonoBehaviour
     [SerializeField] protected float health = 100f;
     [SerializeField] protected float fireRate;
     [SerializeField] protected float speed;
-    
+
     public float dangerLevel;
     public GameManager.Team team;
 

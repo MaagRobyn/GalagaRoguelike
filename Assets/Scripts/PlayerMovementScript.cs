@@ -17,7 +17,10 @@ public class PlayerMovementScript : ShipScript
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
 
-    float respawnTimer = 3;
+    public delegate void PlayerDeath();
+    public event PlayerDeath PlayerDied;
+
+    float respawnTimer = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,7 @@ public class PlayerMovementScript : ShipScript
     // Update is called once per frame
     void Update()
     {
-        GameManager.Instance.PlayerTransform = gameObject.transform;
+        GameManager.Instance.Player = this;
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         jump = Input.GetAxisRaw("Jump");
@@ -36,7 +39,7 @@ public class PlayerMovementScript : ShipScript
 
         if (!playerSprite.enabled)
         {
-            if(respawnTimer <= 0)
+            if (respawnTimer <= 0)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
@@ -46,16 +49,16 @@ public class PlayerMovementScript : ShipScript
             }
         }
 
-        if(projectileTimer > 0)
+        if (projectileTimer > 0)
         {
             projectileTimer -= Time.deltaTime;
         }
-        if(jump > 0 && projectileTimer <= 0)
+        if (jump > 0 && projectileTimer <= 0)
         {
             var projectileType = GameManager.ProjectileType.Basic;
             var bulletDmg = projectileDamage;
             var bulletVelocity = 10;
-            if(health >  0)
+            if (health > 0)
             {
                 ShootProjectile(projectileType, bulletDmg, bulletVelocity);
             }
@@ -65,7 +68,7 @@ public class PlayerMovementScript : ShipScript
 
     private void FixedUpdate()
     {
-        if(health > 0)
+        if (health > 0)
         {
             var verticalVector = Tools.getUnitVector3(rb.rotation);
             var horizontalVector = Tools.getUnitVector3(rb.rotation + 90);
@@ -82,11 +85,17 @@ public class PlayerMovementScript : ShipScript
     {
         base.TakeDamage(damage);
         healthbar.value = health;
-        if(health <= 0)
+        if (health <= 0)
         {
+            OnPlayerDeath();
             healthbar.enabled = false;
             playerSprite.enabled = false;
+
         }
+    }
+    protected virtual void OnPlayerDeath()
+    {
+        PlayerDied?.Invoke();
     }
 
 
