@@ -20,8 +20,7 @@ public class AlienShipScript : ShipScript
         Wander,
         Chase,
         Cruise,
-        Drone,
-        CirclePlayer
+        Drone
     }
 
     // Start is called before the first frame update
@@ -79,6 +78,9 @@ public class AlienShipScript : ShipScript
                 }
                 target.position = destinationCoordinates;
                 GoToTarget(target);
+                break;
+            case FlightPattern.Cruise:
+                rb.AddForce(Tools.GetUnitVector3(rb.rotation));
                 break;
         }
 

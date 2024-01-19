@@ -70,8 +70,8 @@ public class PlayerMovementScript : ShipScript
     {
         if (health > 0)
         {
-            var verticalVector = Tools.getUnitVector3(rb.rotation);
-            var horizontalVector = Tools.getUnitVector3(rb.rotation + 90);
+            var verticalVector = Tools.GetUnitVector3(rb.rotation);
+            var horizontalVector = Tools.GetUnitVector3(rb.rotation + 90);
             rb.velocity = horizontal * speed * verticalVector + speed * vertical * horizontalVector;
             //var velocity = new Vector2(horizontal, vertical);
             //velocity.Normalize();

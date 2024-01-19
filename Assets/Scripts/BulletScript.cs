@@ -15,7 +15,7 @@ public class BulletScript : MonoBehaviour
         manager = GameManager.Instance.bulletDict[gameObject.GetInstanceID()];
         rb.SetRotation(manager.angle);
         // Shoot projectile and adjust for 90 degree angle
-        var unitVector = Tools.getUnitVector3(manager.angle + 90);
+        var unitVector = Tools.GetUnitVector3(manager.angle + 90);
         rb.AddForce(unitVector * manager.velocity);
     }
 
