@@ -36,6 +36,11 @@ public class PlayerMovementScript : ShipScript
         vertical = Input.GetAxisRaw("Vertical");
         jump = Input.GetAxisRaw("Jump");
         rotation = Input.GetAxisRaw("Rotation");
+        if (Input.GetAxisRaw("Close") == 1)
+        {
+            Debug.Log("Quitting Game");
+            Application.Quit();
+        }
 
         if (!playerSprite.enabled)
         {

@@ -51,11 +51,6 @@ public class GameManager : MonoBehaviour
                 playerHasDied = true;
             };
         }
-        if (Input.GetAxisRaw("Close") == 1)
-        {
-            Debug.Log("Quitting Game");
-            Application.Quit();
-        }
         if (playerHasDied)
         {
             if (deathScreenTimer <= 0)
