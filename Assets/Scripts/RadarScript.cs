@@ -27,7 +27,7 @@ namespace Assets.Scripts
             }
             else
             {
-                var distance = Vector3.Distance(matchingShip.transform.position, GameManager.Instance.Player.transform.position);
+                var distance = Vector3.Distance(matchingShip.transform.position, transform.position);
                 //Debug.Log(distance);
                 if (radar.enabled && distance <= RADAR_RADIUS)
                 {
@@ -37,14 +37,12 @@ namespace Assets.Scripts
                 {
                     radar.enabled = true;
                 }
-
-                var playerTransform = GameManager.Instance.Player.transform;
-
-                var angle = Tools.FindAngleBetweenTwoTransforms(playerTransform, matchingShip.transform);
-                var angles = (Vector3.forward * angle) - playerTransform.eulerAngles;
+                var cameraTransform = GameManager.Instance.Player.GetComponentInChildren<Camera>().transform;
+                var angle = Tools.FindAngleBetweenTwoPositions(cameraTransform.position, matchingShip.transform.position);
+                var angles = (Vector3.forward * angle) - cameraTransform.eulerAngles;
                 transform.eulerAngles = angles;
 
-                //Debug.DrawLine(playerTransform.position, matchingShip.transform.position, Color.blue);
+                Debug.DrawLine(cameraTransform.position, matchingShip.transform.position, Color.blue);
             }
         }
     }

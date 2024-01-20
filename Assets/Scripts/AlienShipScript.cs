@@ -40,11 +40,7 @@ public class AlienShipScript : ShipScript
         projectileTimer -= 0.5f * Time.deltaTime;
         if (projectileTimer <= 0)
         {
-            var projectileType = GameManager.ProjectileType.Basic;
-
-            var dmg = projectileDamage;
-            var velocity = projectileSpeed;
-            ShootProjectile(projectileType, dmg, velocity);
+            FireCannons(projectileDamageMod, projectileVelocityMod);
         }
         projectileTimer -= 0.5f * Time.deltaTime;
     }
@@ -80,7 +76,7 @@ public class AlienShipScript : ShipScript
                 GoToTarget(target);
                 break;
             case FlightPattern.Cruise:
-                rb.AddForce(Tools.GetUnitVector3(rb.rotation));
+                rb.AddForce(Tools.GetUnitVector2(rb.rotation));
                 break;
         }
 
@@ -88,7 +84,7 @@ public class AlienShipScript : ShipScript
 
     private void RotateTowardsTarget(Transform target)
     {
-        float angle = Tools.FindAngleBetweenTwoTransforms(transform, target);
+        float angle = Tools.FindAngleBetweenTwoPositions(transform.position, target.position);
         rb.SetRotation(angle);
     }
 

@@ -1,3 +1,4 @@
+using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,11 @@ using UnityEngine;
 public abstract class ShipScript : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D rb;
-    [SerializeField] protected List<Transform> cannons = new();
+    [SerializeField] protected List<CannonScript> cannons = new();
 
-    [SerializeField] protected float projectileTimer = 0;
-    [SerializeField] protected float projectileSpeed = 10;
-    [SerializeField] protected float projectileDamage = 1;
+    [SerializeField] protected float projectileTimer;
+    [SerializeField] protected float projectileVelocityMod = 10;
+    [SerializeField] protected float projectileDamageMod = 1;
 
     [SerializeField] protected float health = 100f;
     [SerializeField] protected float fireRate;
@@ -18,19 +19,11 @@ public abstract class ShipScript : MonoBehaviour
     public float dangerLevel;
     public GameManager.Team team;
 
-    protected void ShootProjectile(GameManager.ProjectileType projectileType, float bulletDmg, float bulletVelocity)
+    protected void FireCannons(float bulletDmgMult = 1, float bulletVelocityMult = 1, float bulletDmgMod = 0, float bulletVelocityMod = 0)
     {
-        foreach (Transform t in cannons)
+        foreach (CannonScript cannon in cannons)
         {
-            GameManager.Instance.ShootProjectile(
-                projectileType,
-                t,
-                team,
-                bulletDmg,
-                bulletVelocity,
-                rb.rotation
-            );
-
+            cannon.ShootProjectile(team, bulletDmgMult, bulletVelocityMult, bulletDmgMod, bulletVelocityMod);
         }
         projectileTimer = fireRate;
     }

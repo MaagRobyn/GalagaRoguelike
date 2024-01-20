@@ -9,9 +9,12 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] Button newGameButton;
+    [SerializeField] GameObject newGameMenu;
     [SerializeField] Button continueButton;
     [SerializeField] Button optionsButton;
     [SerializeField] Button quitButton;
+    [SerializeField] Button endlessButton;
+    [SerializeField] Button storyButton;
 
     [SerializeField] GameObject optionMenu;
     [SerializeField] Button closeOptionsMenuButton;
@@ -30,7 +33,7 @@ public class MenuManager : MonoBehaviour
         
         newGameButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(Tools.SceneConstants.GAME_SCENE);
+            newGameMenu.SetActive(true);
         });
         continueButton.onClick.AddListener(() =>
         {
@@ -51,6 +54,18 @@ public class MenuManager : MonoBehaviour
         volumeSlider.onValueChanged.AddListener(x =>
         {
             SoundManager.Instance.SetVolume((int)x);
+        });
+        endlessButton.onClick.AddListener(() =>
+        {
+            GameManager.gameMode = GameManager.GameMode.Endless;
+            SceneManager.LoadScene(Constants.GAME_SCENE);
+
+        });
+        storyButton.onClick.AddListener(() =>
+        {
+            GameManager.gameMode = GameManager.GameMode.Story;
+            SceneManager.LoadScene(Constants.GAME_SCENE);
+
         });
     }
     private void FixedUpdate()

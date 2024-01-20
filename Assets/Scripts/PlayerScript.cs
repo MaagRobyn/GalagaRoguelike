@@ -1,3 +1,4 @@
+using Assets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerMovementScript : ShipScript
+public class PlayerScript : ShipScript
 {
     public float rotationSpeed;
     float horizontal;
@@ -16,6 +17,7 @@ public class PlayerMovementScript : ShipScript
 
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
+    readonly List<Reward> obtainedRewards = new();
 
     public delegate void PlayerDeath();
     public event PlayerDeath PlayerDied;
@@ -60,12 +62,9 @@ public class PlayerMovementScript : ShipScript
         }
         if (jump > 0 && projectileTimer <= 0)
         {
-            var projectileType = GameManager.ProjectileType.Basic;
-            var bulletDmg = projectileDamage;
-            var bulletVelocity = 10;
             if (health > 0)
             {
-                ShootProjectile(projectileType, bulletDmg, bulletVelocity);
+                FireCannons(projectileDamageMod, projectileVelocityMod);
             }
         }
     }
@@ -75,8 +74,8 @@ public class PlayerMovementScript : ShipScript
     {
         if (health > 0)
         {
-            var verticalVector = Tools.GetUnitVector3(rb.rotation);
-            var horizontalVector = Tools.GetUnitVector3(rb.rotation + 90);
+            var verticalVector = Tools.GetUnitVector2(rb.rotation);
+            var horizontalVector = Tools.GetUnitVector2(rb.rotation + 90);
             rb.velocity = horizontal * speed * verticalVector + speed * vertical * horizontalVector;
             //var velocity = new Vector2(horizontal, vertical);
             //velocity.Normalize();
@@ -101,6 +100,11 @@ public class PlayerMovementScript : ShipScript
     protected virtual void OnPlayerDeath()
     {
         PlayerDied?.Invoke();
+    }
+
+    public void AddReward(Reward reward)
+    {
+        obtainedRewards.Add(reward);
     }
 
 

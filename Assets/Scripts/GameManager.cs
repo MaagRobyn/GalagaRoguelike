@@ -10,12 +10,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public static GameMode gameMode;
 
-    public Dictionary<int, ProjectileManager> bulletDict = new();
-    public PlayerMovementScript Player;
+    public PlayerScript Player;
     public float bounty = 0;
     private float currentDangerLevel;
-    private List<ShipScript> existingShips = new();
+    private readonly List<ShipScript> existingShips = new();
     private EncounterType encounterType;
 
     [SerializeField] Button optionButton;
@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform radarHolder;
     [SerializeField] TextMeshProUGUI bountyText;
     [SerializeField] GameObject deathscreen;
+
+    readonly List<Reward> rewards = new();
 
     float spawnDelay = 1.0f;
     bool roundHasEnded = false;
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
     {
         if (!playerDeathEventHasBeenSet && Player != null)
         {
+            playerDeathEventHasBeenSet = true;
             Player.PlayerDied += () =>
             {
                 playerHasDied = true;
@@ -112,7 +115,6 @@ public class GameManager : MonoBehaviour
     }
     private void OpenMenu(int rewardCount)
     {
-        List<Reward> rewards = new();
         var crewMember = new CrewMember
         {
             Title = "Bobby Hill",
@@ -122,7 +124,7 @@ public class GameManager : MonoBehaviour
 
         var baseTransform = new GameObject().transform;
         var buttons = new List<Button>();
-        float spacing = rewardMenu.rect.height / rewardCount + 1;
+        float spacing = rewardMenu.rect.height / (rewardCount + 1) - 200f;
         for (int i = 0; i < rewardCount; i++)
         {
             var reward = rewards[Random.Range(0, rewards.Count - 1)];
@@ -175,28 +177,6 @@ public class GameManager : MonoBehaviour
         spawnDelay = 1.0f;
         return alienShip;
     }
-    public void ShootProjectile(ProjectileType projectileType, Transform transform, Team team, float damage, float velocity, float angle)
-    {
-        // Adjust for 90 degree skew
-        //angle += 90;
-
-        var projectileObj = Instantiate(basicProjectile);
-        projectileObj.transform.position = transform.position;
-        projectileObj.transform.rotation = transform.rotation;
-        projectileObj.name = "Projectile";
-        projectileObj.layer = 9 + (int)team;
-
-
-        bulletDict.Add(projectileObj.GetInstanceID(), new ProjectileManager()
-        {
-            type = projectileType,
-            owningTeam = team,
-            damage = damage,
-            velocity = velocity,
-            angle = angle
-        });
-        //Debug.Log("bullet shot");
-    }
     public void ResetLevel()
     {
         for (int i = 0; i < existingShips.Count;)
@@ -205,18 +185,6 @@ public class GameManager : MonoBehaviour
             bounty = 0;
             AddBounty(5);
         }
-    }
-    public class ProjectileManager
-    {
-        public Team owningTeam;
-        public float damage;
-        public float velocity;
-        public float angle;
-        public ProjectileType type;
-    }
-    public enum ProjectileType
-    {
-        Basic = 0
     }
     public enum Team
     {
@@ -227,5 +195,10 @@ public class GameManager : MonoBehaviour
     {
         Endless,
         Basic
+    }
+    public enum GameMode
+    {
+        Endless = 0,
+        Story = 1
     }
 }
