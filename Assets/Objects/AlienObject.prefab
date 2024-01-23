@@ -51,7 +51,7 @@ MonoBehaviour:
   rb: {fileID: 9007604034946557565}
   cannons:
   - {fileID: 8811243175732276072}
-  projectileTimer: 0
+  projectileTimer: 1
   projectileVelocityMod: 1
   projectileDamageMod: 1
   health: 30

@@ -26,22 +26,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform radarHolder;
     [SerializeField] TextMeshProUGUI bountyText;
     [SerializeField] GameObject deathscreen;
-
+    [SerializeField] GameObject roundCounterScreen;
+    [SerializeField] TextMeshProUGUI roundCounterText;
+    
     readonly List<Reward> rewards = new();
 
-    float spawnDelay = 1.0f;
     bool roundHasEnded = false;
     bool roundCanEnd = false;
+    float roundBounty = 1.0f;
+    int roundCount = 1;
 
+    // Timers
+    float postRoundTimer = 5.0f;
+    float spawnDelay = 1.0f;
     float deathScreenTimer = 3.0f;
-    bool playerHasDied = false;
+
     bool playerDeathEventHasBeenSet = false;
+    bool playerHasDied = false;
 
     void Start()
     {
         Instance = this;
         AddBounty(5.0f);
-        encounterType = EncounterType.Basic;
+        encounterType = EncounterType.Endless;
     }
     // Update is called once per frame
     void Update()
@@ -54,22 +61,32 @@ public class GameManager : MonoBehaviour
                 playerHasDied = true;
             };
         }
-        if (playerHasDied)
+        if(deathScreenTimer > 0 && playerHasDied)
         {
-            if (deathScreenTimer <= 0)
+            deathScreenTimer -= Time.deltaTime;
+        }
+        if(deathScreenTimer < 0)
+        {
+            deathscreen.SetActive(true);
+        }
+        if (postRoundTimer > 0 && roundHasEnded)
+        {
+            postRoundTimer -= Time.deltaTime;
+        }
+        if(postRoundTimer < 0 && roundHasEnded)
+        {
+            roundHasEnded = false;
+            if (roundCounterScreen.activeSelf)
             {
-                deathscreen.SetActive(true);
-            }
-            else
-            {
-                deathScreenTimer -= Time.deltaTime;
+                roundCounterScreen.SetActive(false);
+
             }
         }
-        if (spawnDelay > 0)
+        if (spawnDelay > 0 && !roundHasEnded)
         {
             spawnDelay -= Time.deltaTime;
         }
-        if (currentDangerLevel < bounty && spawnDelay <= 0)
+        if (currentDangerLevel < bounty && spawnDelay <= 0 && !roundHasEnded)
         {
             var alienShip = SpawnAlien(basicAlien);
             existingShips.Add(alienShip);
@@ -89,23 +106,27 @@ public class GameManager : MonoBehaviour
         if (roundCanEnd && existingShips.Count == 0 && !roundHasEnded)
         {
             roundHasEnded = true;
-            Debug.Log("Round finished");
             switch (encounterType)
             {
                 case EncounterType.Endless:
-                    spawnDelay = 5;
-                    roundHasEnded = false;
-                    roundCanEnd = false;
+                    spawnDelay = 1.0f;
+                    postRoundTimer = 5.0f;
+                    roundBounty = 1.0f;
                     currentDangerLevel = 0;
-                    AddBounty(1.0f);
+                    roundCanEnd = false;
+                    AddBounty(roundBounty);
+                    roundCounterText.text = $"Round {roundCount} completed\nBounty Gained: ${roundBounty * 10}00";
+                    roundCounterScreen.SetActive(true);
+                    roundCount++;
                     break;
                 case EncounterType.Basic:
                     spawnDelay = 0;
-                    roundHasEnded = false;
                     roundCanEnd = false;
                     currentDangerLevel = 0;
                     AddBounty(1.0f);
-                    OpenMenu(3);
+                    
+                    //Currently Bugged
+                    //OpenMenu(3);
                     break;
                 default:
                     break;

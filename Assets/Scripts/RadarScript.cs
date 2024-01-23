@@ -2,7 +2,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Assets.Scripts
 {
@@ -16,6 +15,7 @@ namespace Assets.Scripts
         void Start()
         {
             radar = GetComponentInChildren<Image>();
+            RotateTowardsTarget();
  
         }
 
@@ -27,23 +27,28 @@ namespace Assets.Scripts
             }
             else
             {
-                var distance = Vector3.Distance(matchingShip.transform.position, transform.position);
-                //Debug.Log(distance);
-                if (radar.enabled && distance <= RADAR_RADIUS)
-                {
-                    radar.enabled = false;
-                }
-                else if (!radar.enabled && distance > RADAR_RADIUS)
-                {
-                    radar.enabled = true;
-                }
-                var cameraTransform = GameManager.Instance.Player.GetComponentInChildren<Camera>().transform;
-                var angle = Tools.FindAngleBetweenTwoPositions(cameraTransform.position, matchingShip.transform.position);
-                var angles = (Vector3.forward * angle) - cameraTransform.eulerAngles;
-                transform.eulerAngles = angles;
-
-                Debug.DrawLine(cameraTransform.position, matchingShip.transform.position, Color.blue);
+                RotateTowardsTarget();
             }
+        }
+
+        private void RotateTowardsTarget()
+        {
+            var cameraTransform = GameManager.Instance.Player.GetComponentInChildren<Camera>().transform;
+            var distance = Vector3.Distance(matchingShip.transform.position, cameraTransform.position);
+            //Debug.Log(distance);
+            if (radar.enabled && distance <= RADAR_RADIUS)
+            {
+                radar.enabled = false;
+            }
+            else if (!radar.enabled && distance > RADAR_RADIUS)
+            {
+                radar.enabled = true;
+            }
+            var angle = Tools.FindAngleBetweenTwoPositions(cameraTransform.position, matchingShip.transform.position);
+            var angles = (Vector3.forward * angle) - cameraTransform.eulerAngles;
+            transform.eulerAngles = angles;
+
+            //Debug.DrawLine(cameraTransform.position, matchingShip.transform.position, Color.blue);
         }
     }
 }
