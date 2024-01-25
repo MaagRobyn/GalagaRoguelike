@@ -1427,7 +1427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5457237187415243427, guid: 106c0b6ac178f464281e640c67a8cda5, type: 3}
       propertyPath: m_Name
-      value: Background (1)
+      value: Background
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2025,13 +2025,13 @@ MonoBehaviour:
   rb: {fileID: 5299631488783375435}
   cannons:
   - {fileID: 8989359012407521201}
-  projectileTimer: 0
+  fireRate: 0.2
+  projectileVelocityMult: 0
+  projectileDamageMult: 0
   projectileVelocityMod: 1
   projectileDamageMod: 1
   health: 100
-  fireRate: 0.2
   speed: 10
-  dangerLevel: 0
   team: 0
   rotationSpeed: 2
   healthbar: {fileID: 697278890}
@@ -2067,6 +2067,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
+  cannonDamageMult: 0
+  cannonVelocityMult: 0
+  cannonDamageMod: 0
+  cannonVelocityMod: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

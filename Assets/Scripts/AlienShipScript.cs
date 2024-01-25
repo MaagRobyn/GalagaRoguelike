@@ -6,14 +6,11 @@ using UnityEngine;
 public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
-    public AlienType type;
+    [SerializeField] private AlienShip ship;
+    private int dangerLevel;
     private const int LERPFACTOR = 2000;
     private Vector3 destinationCoordinates;
 
-    public enum AlienType
-    {
-        Basic = 0
-    }
     private FlightPattern flightPattern;
     enum FlightPattern
     {
@@ -26,6 +23,20 @@ public class AlienShipScript : ShipScript
     // Start is called before the first frame update
     void Start()
     {
+        speed = ship.speed;
+        cannons = ship.cannons;
+        health = ship.health;
+        fireRate = ship.fireRate;
+        dangerLevel = ship.dangerLevel;
+        projectileDamageMod = ship.damageMod;
+        projectileDamageMult = ship.damageMult;
+        projectileVelocityMod = ship.velocityMod;
+        projectileVelocityMult = ship.velocityMult;
+
+        projectileTimer = 1;
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = ship.sprite;
+
         fireRate = 1;
         flightPattern = FlightPattern.Chase;
         GameManager.Instance.Player.PlayerDied += () =>
@@ -100,5 +111,10 @@ public class AlienShipScript : ShipScript
         {
             Destroy(gameObject);
         }
+    }
+
+    public int GetDangerLevel()
+    {
+        return dangerLevel;
     }
 }

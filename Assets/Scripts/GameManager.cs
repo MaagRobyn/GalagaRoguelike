@@ -182,17 +182,10 @@ public class GameManager : MonoBehaviour
     private AlienShipScript SpawnAlien(AlienShipScript shipToSpawn)
     {
         var randomNum = Random.Range(-10, 10);
-        switch (shipToSpawn.type)
-        {
-            case AlienShipScript.AlienType.Basic:
-                currentDangerLevel += 1;
-                break;
-            default:
-                Debug.LogError("Attempted to spawn and alien of an unkown type");
-                break;
-        }
+        currentDangerLevel += shipToSpawn.GetDangerLevel();
         var alienShip = Instantiate(shipToSpawn);
         alienShip.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
+        
         var radarObj = Instantiate(radar, radarHolder);
         radarObj.matchingShip = alienShip;
         spawnDelay = 1.0f;

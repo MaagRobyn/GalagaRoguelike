@@ -7,7 +7,12 @@ using static GameManager;
 public class CannonScript : MonoBehaviour
 {
     public ScriptableProjectile Projectile;
-    
+
+    [SerializeField] float cannonDamageMult;
+    [SerializeField] float cannonVelocityMult;
+    [SerializeField] float cannonDamageMod;
+    [SerializeField] float cannonVelocityMod;
+
     /// <summary>
     /// Fires the projectile from the cannon
     /// </summary>
