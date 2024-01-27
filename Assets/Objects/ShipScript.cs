@@ -7,28 +7,31 @@ using UnityEngine;
 public abstract class ShipScript : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D rb;
-    [SerializeField] protected List<CannonScript> cannons = new();
+    [SerializeField] protected List<CannonSlotScript> cannons = new();
 
-    protected float projectileTimer;
-    [InspectorLabel("Projectile Info")]
-    [SerializeField] protected float fireRate;
-    [SerializeField] protected float projectileVelocityMult;
-    [SerializeField] protected float projectileDamageMult;
-    [SerializeField] protected float projectileVelocityMod;
-    [SerializeField] protected float projectileDamageMod;
+    [SerializeField] protected float shipProjectileVelocityMult;
+    [SerializeField] protected float shipProjectileDamageMult;
+    [SerializeField] protected float shipProjectileVelocityMod;
+    [SerializeField] protected int shipProjectileDamageMod;
 
     [SerializeField] protected float health;
     [SerializeField] protected float speed;
 
     public GameManager.Team team;
 
-    protected void FireCannons(float bulletDmgMult = 1, float bulletVelocityMult = 1, float bulletDmgMod = 0, float bulletVelocityMod = 0)
+    protected void FireCannons()
     {
-        foreach (CannonScript cannon in cannons)
+        foreach (CannonSlotScript cannon in cannons)
         {
-            cannon.ShootProjectile(team, bulletDmgMult, bulletVelocityMult, bulletDmgMod, bulletVelocityMod);
+            if (cannon != null && cannon.isSlotFilled && cannon.isReadyToFire)
+                cannon.ShootProjectile(
+                    team, 
+                    shipProjectileDamageMult, 
+                    shipProjectileVelocityMult, 
+                    shipProjectileDamageMod, 
+                    shipProjectileVelocityMod
+                );
         }
-        projectileTimer = fireRate;
     }
 
     public virtual void TakeDamage(float damage)

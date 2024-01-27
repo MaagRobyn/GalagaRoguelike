@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4360182481132359214}
   - component: {fileID: 3685670995055976633}
-  - component: {fileID: 4377046517882174169}
+  - component: {fileID: 4145681537387327220}
   m_Layer: 7
   m_Name: RightCannonSlot
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4377046517882174169
+--- !u!114 &4145681537387327220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,14 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374978877104514852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 0}
+  isSlotFilled: 0
+  isReadyToFire: 0
 --- !u!1 &1905900964395409899
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8473153900892868682}
   - component: {fileID: 569841269914407218}
-  - component: {fileID: 7442487854705108710}
+  - component: {fileID: 2495493707032298154}
   m_Layer: 7
   m_Name: FarRightCannonSlot
   m_TagString: Untagged
@@ -187,7 +185,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7442487854705108710
+--- !u!114 &2495493707032298154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,14 +194,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1905900964395409899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 0}
+  isSlotFilled: 0
+  isReadyToFire: 0
 --- !u!1 &2465081990039404525
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4777875799721941011}
   - component: {fileID: 3512466112374781244}
-  - component: {fileID: 8081887751721398273}
+  - component: {fileID: 2661089127333272525}
   m_Layer: 7
   m_Name: FarLeftCannonSlot
   m_TagString: Untagged
@@ -289,7 +285,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8081887751721398273
+--- !u!114 &2661089127333272525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,14 +294,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2465081990039404525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 0}
+  isSlotFilled: 0
+  isReadyToFire: 0
 --- !u!1 &3863426417890616572
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,16 +354,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 9007604034946557565}
   cannons:
-  - {fileID: 8811243175732276072}
-  - {fileID: 1520883894091351231}
-  - {fileID: 4377046517882174169}
-  - {fileID: 8081887751721398273}
-  - {fileID: 7442487854705108710}
-  fireRate: 1
-  projectileVelocityMult: 0
-  projectileDamageMult: 0
-  projectileVelocityMod: 1
-  projectileDamageMod: 1
+  - {fileID: 3599785795159028507}
+  - {fileID: 6776386364511151460}
+  - {fileID: 4145681537387327220}
+  - {fileID: 2661089127333272525}
+  - {fileID: 2495493707032298154}
+  shipProjectileVelocityMult: 0
+  shipProjectileDamageMult: 0
+  shipProjectileVelocityMod: 0
+  shipProjectileDamageMod: 0
   health: 30
   speed: 20
   team: 1
@@ -499,7 +492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7553727987979414806}
   - component: {fileID: 6611997764561326938}
-  - component: {fileID: 1520883894091351231}
+  - component: {fileID: 6776386364511151460}
   m_Layer: 7
   m_Name: LeftCannonSlot
   m_TagString: Untagged
@@ -574,7 +567,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1520883894091351231
+--- !u!114 &6776386364511151460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -583,14 +576,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4585003875976859538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 0}
+  isSlotFilled: 0
+  isReadyToFire: 0
 --- !u!1 &7961293949178924409
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,9 +592,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8806823238610959169}
   - component: {fileID: 4835056169832806678}
-  - component: {fileID: 8811243175732276072}
+  - component: {fileID: 3599785795159028507}
   m_Layer: 7
-  m_Name: FrontCannonSlot
+  m_Name: CenterCannonSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,7 +667,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8811243175732276072
+--- !u!114 &3599785795159028507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,11 +676,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7961293949178924409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 1
-  cannonVelocityMult: 1
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 11400000, guid: 5bd7b70951aa4d44faa1cfa479918b7e, type: 2}
+  isSlotFilled: 0
+  isReadyToFire: 0

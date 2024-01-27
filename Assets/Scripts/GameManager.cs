@@ -28,7 +28,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject deathscreen;
     [SerializeField] GameObject roundCounterScreen;
     [SerializeField] TextMeshProUGUI roundCounterText;
-    
+
+    [SerializeField] List<ScriptableAlien> alienList = new();
+    [SerializeField] List<ScriptableAlien> rewardList = new();
+
     readonly List<Reward> rewards = new();
 
     bool roundHasEnded = false;
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (!playerDeathEventHasBeenSet && Player != null)
         {
             playerDeathEventHasBeenSet = true;
-            Player.PlayerDied += () =>
+            Player.OnPlayerDeath += () =>
             {
                 playerHasDied = true;
             };
@@ -89,6 +92,7 @@ public class GameManager : MonoBehaviour
         if (currentDangerLevel < bounty && spawnDelay <= 0 && !roundHasEnded)
         {
             var alienShip = SpawnAlien(basicAlien);
+            currentDangerLevel += alienShip.GetComponent<AlienShipScript>().GetDangerLevel();
             existingShips.Add(alienShip);
         }
         if (!roundCanEnd && currentDangerLevel >= bounty)
@@ -143,7 +147,6 @@ public class GameManager : MonoBehaviour
         };
         rewards.Add(crewMember);
 
-        var baseTransform = new GameObject().transform;
         var buttons = new List<Button>();
         float spacing = rewardMenu.rect.height / (rewardCount + 1) - 200f;
         for (int i = 0; i < rewardCount; i++)

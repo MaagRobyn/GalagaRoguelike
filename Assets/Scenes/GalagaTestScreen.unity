@@ -1314,6 +1314,7 @@ MonoBehaviour:
   deathscreen: {fileID: 905562073}
   roundCounterScreen: {fileID: 1490978927}
   roundCounterText: {fileID: 959181756}
+  alienList: []
 --- !u!4 &1473282668
 Transform:
   m_ObjectHideFlags: 0
@@ -2025,11 +2026,10 @@ MonoBehaviour:
   rb: {fileID: 5299631488783375435}
   cannons:
   - {fileID: 8989359012407521201}
-  fireRate: 0.2
-  projectileVelocityMult: 0
-  projectileDamageMult: 0
-  projectileVelocityMod: 1
-  projectileDamageMod: 1
+  shipProjectileVelocityMult: 1
+  shipProjectileDamageMult: 1
+  shipProjectileVelocityMod: 0
+  shipProjectileDamageMod: 0
   health: 100
   speed: 10
   team: 0
@@ -2063,14 +2063,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8989359012407521200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5ddc8e09ce5454ea5b1df0f35abf64, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1df19284ff6047a804167d8032185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
-  cannonDamageMod: 0
-  cannonVelocityMod: 0
+  cannon: {fileID: 11400000, guid: 5bd7b70951aa4d44faa1cfa479918b7e, type: 2}
+  isSlotFilled: 0
+  isReadyToFire: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

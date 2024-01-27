@@ -23,7 +23,6 @@ public class Tools
     {
         var randFloat = Random.Range(0, 1.0f);
         int randInt = (int)(randFloat * 2);
-        Debug.Log($"{randInt}, {randFloat}");
         return randInt % 2 == 0;
     }
 }

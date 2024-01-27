@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: -8584935668505378098}
-  properties: {fileID: 0}
+  properties: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
   team: 0
 --- !u!96 &6934835046188655023
 TrailRenderer:

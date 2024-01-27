@@ -34,7 +34,7 @@ namespace Assets.Scripts
         private void RotateTowardsTarget()
         {
             var cameraTransform = GameManager.Instance.Player.GetComponentInChildren<Camera>().transform;
-            var distance = Vector3.Distance(matchingShip.transform.position, cameraTransform.position);
+            var distance = Vector3.Distance(matchingShip.transform.position, GameManager.Instance.Player.transform.position);
             //Debug.Log(distance);
             if (radar.enabled && distance <= RADAR_RADIUS)
             {

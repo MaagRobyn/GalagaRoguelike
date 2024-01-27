@@ -7,8 +7,10 @@ using static GameManager;
 public class ProjectileScript : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
-    public ScriptableProjectile properties;
-    public Team team;
+    ScriptableProjectile properties;
+    
+    private int damage;
+    private float velocity;
 
     // Start is called before the first frame update
     void Start()
@@ -17,10 +19,26 @@ public class ProjectileScript : MonoBehaviour
         //// Shoot projectile and adjust for 90 degree angle
         rb.SetRotation(transform.rotation);
         var unitVector = Tools.GetUnitVector2(rb.rotation + 90);
-        rb.AddForce(unitVector * properties.velocity);
+        rb.AddForce(unitVector * velocity);
+        Debug.Log(velocity);
     }
 
-
+    public void SetProperties(ScriptableProjectile prop)
+    {
+        properties = prop;
+    }
+    public void SetVelocity(float velocityMult, float velocityMod)
+    {
+        velocity = properties.baseVelocity + velocityMod;
+        velocity *= velocityMult;
+        //Debug.Log($"Velocity: {velocity}");
+    }
+    public void SetDamage(float damageMult, int damageMod)
+    {
+        damage = damageMod + properties.baseDamage;
+        damage *= (int)(damageMult);
+        //Debug.Log($"Damage Calculation: {damageMult} * ({properties.baseDamage} + {damageMod})\nTotal Damage: {damage}");
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -28,7 +46,8 @@ public class ProjectileScript : MonoBehaviour
         {
             if((int)ship.team != gameObject.layer - Constants.BULLET_TEAM_LAYER_NUM)
             {
-                ship.TakeDamage(properties.damage);
+                ship.TakeDamage(damage);
+                Debug.Log($"{damage}");
                 Destroy(gameObject);
             }
 

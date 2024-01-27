@@ -6,7 +6,7 @@ using UnityEngine;
 public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
-    [SerializeField] private AlienShip ship;
+    [SerializeField] private ScriptableAlien ship;
     private int dangerLevel;
     private const int LERPFACTOR = 2000;
     private Vector3 destinationCoordinates;
@@ -24,22 +24,23 @@ public class AlienShipScript : ShipScript
     void Start()
     {
         speed = ship.speed;
-        cannons = ship.cannons;
+        for(int i = 0; i < cannons.Count && i < ship.cannons.Count; i++)
+        {
+            cannons[i].cannon = ship.cannons[i];
+            
+        }
         health = ship.health;
-        fireRate = ship.fireRate;
         dangerLevel = ship.dangerLevel;
-        projectileDamageMod = ship.damageMod;
-        projectileDamageMult = ship.damageMult;
-        projectileVelocityMod = ship.velocityMod;
-        projectileVelocityMult = ship.velocityMult;
+        shipProjectileDamageMod = ship.damageMod;
+        shipProjectileDamageMult = ship.damageMult;
+        shipProjectileVelocityMod = ship.velocityMod;
+        shipProjectileVelocityMult = ship.velocityMult;
 
-        projectileTimer = 1;
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = ship.sprite;
 
-        fireRate = 1;
         flightPattern = FlightPattern.Chase;
-        GameManager.Instance.Player.PlayerDied += () =>
+        GameManager.Instance.Player.OnPlayerDeath += () =>
         {
             flightPattern = FlightPattern.Wander;
         };
@@ -48,60 +49,47 @@ public class AlienShipScript : ShipScript
     // Update is called once per frame
     void Update()
     {
-        projectileTimer -= 0.5f * Time.deltaTime;
-        if (projectileTimer <= 0)
-        {
-            FireCannons(projectileDamageMod, projectileVelocityMod);
-        }
-        projectileTimer -= 0.5f * Time.deltaTime;
+        FireCannons();
     }
 
     private void FixedUpdate()
     {
-        Transform target = new GameObject().transform;
         switch (flightPattern)
         {
             case FlightPattern.Chase:
-                target.position = GameManager.Instance.Player.transform.position;
-                destinationCoordinates = target.position;
-                if (Vector3.Distance(transform.position, target.position) > 2)
+                destinationCoordinates = GameManager.Instance.Player.transform.position;
+                if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
                 {
-                    GoToTarget(target);
-                }
-                RotateTowardsTarget(target);
-                if (Vector3.Distance(transform.position, target.position) <= 1)
-                {
-                    target.position = -target.position;
-                    GoToTarget(target);
+                    return;
                 }
                 break;
             case FlightPattern.Wander:
-                if (Vector3.Distance(transform.position, target.position) < 1)
+                if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
                 {
                     var x = UnityEngine.Random.Range(-1000, 1000);
                     var y = UnityEngine.Random.Range(-1000, 1000);
                     var z = UnityEngine.Random.Range(-1000, 1000);
                     destinationCoordinates = new Vector3(x, y, z);
                 }
-                target.position = destinationCoordinates;
-                GoToTarget(target);
                 break;
             case FlightPattern.Cruise:
                 rb.AddForce(Tools.GetUnitVector2(rb.rotation));
-                break;
+                return;
         }
+        GoToTarget(destinationCoordinates);
+        RotateTowardsTarget(destinationCoordinates);
 
     }
 
-    private void RotateTowardsTarget(Transform target)
+    private void RotateTowardsTarget(Vector3 target)
     {
-        float angle = Tools.FindAngleBetweenTwoPositions(transform.position, target.position);
+        float angle = Tools.FindAngleBetweenTwoPositions(transform.position, target);
         rb.SetRotation(angle);
     }
 
-    private void GoToTarget(Transform target)
+    private void GoToTarget(Vector3 target)
     {
-        rb.position = Vector2.Lerp(transform.position, target.position, speed / LERPFACTOR);
+        rb.position = Vector2.Lerp(transform.position, target, speed / LERPFACTOR);
     }
 
     public override void TakeDamage(float damage)

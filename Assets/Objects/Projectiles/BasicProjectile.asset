@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33056a26fd57cc4fac4c0261b81da27, type: 3}
   m_Name: BasicProjectile
   m_EditorClassIdentifier: 
-  owningTeam: 0
-  type: 0
+  element: 0
   bulletPrefab: {fileID: 8364276607121668643, guid: 6ce8c16315ef0ad48a7dd2526b56d607, type: 3}
-  damage: 10
-  velocity: 100
-  angle: 0
+  sprite: {fileID: -9095717837082945937, guid: 6d5641f46bd308a42824b752e1e93fab, type: 3}
+  baseDamage: 10
+  baseVelocity: 10

@@ -19,9 +19,6 @@ public class PlayerScript : ShipScript
     [SerializeField] SpriteRenderer playerSprite;
     readonly List<Reward> obtainedRewards = new();
 
-    public delegate void PlayerDeath();
-    public event PlayerDeath PlayerDied;
-
     float respawnTimer = 5;
 
     // Start is called before the first frame update
@@ -56,16 +53,9 @@ public class PlayerScript : ShipScript
             }
         }
 
-        if (projectileTimer > 0)
+        if (health > 0 && jump > 0)
         {
-            projectileTimer -= Time.deltaTime;
-        }
-        if (jump > 0 && projectileTimer <= 0)
-        {
-            if (health > 0)
-            {
-                FireCannons(projectileDamageMod, projectileVelocityMod);
-            }
+            FireCannons();
         }
     }
 
@@ -91,21 +81,26 @@ public class PlayerScript : ShipScript
         healthbar.value = health;
         if (health <= 0)
         {
-            OnPlayerDeath();
+            InvokePlayerDeath();
             healthbar.enabled = false;
             playerSprite.enabled = false;
 
         }
     }
-    protected virtual void OnPlayerDeath()
-    {
-        PlayerDied?.Invoke();
-    }
-
     public void AddReward(Reward reward)
     {
         obtainedRewards.Add(reward);
     }
+
+    #region Events
+
+    public delegate void PlayerDeath();
+    public event PlayerDeath OnPlayerDeath;
+    protected virtual void InvokePlayerDeath()
+    {
+        OnPlayerDeath?.Invoke();
+    }
+    #endregion
 
 
 }
