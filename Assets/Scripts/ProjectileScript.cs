@@ -20,7 +20,7 @@ public class ProjectileScript : MonoBehaviour
         rb.SetRotation(transform.rotation);
         var unitVector = Tools.GetUnitVector2(rb.rotation + 90);
         rb.AddForce(unitVector * velocity);
-        Debug.Log(velocity);
+        //Debug.Log(velocity);
     }
 
     public void SetProperties(ScriptableProjectile prop)

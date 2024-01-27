@@ -79,7 +79,7 @@ public class CannonSlotScript : MonoBehaviour
     {
         if (isSlotFilled && isReadyToFire)
         {
-            var projectileObj = Instantiate(Projectile.bulletPrefab);
+            var projectileObj = Instantiate(Projectile.bulletPrefab, transform);
             projectileObj.transform.SetPositionAndRotation(transform.position, transform.rotation);
             projectileObj.name = "Projectile";
             projectileObj.layer = Constants.BULLET_TEAM_LAYER_NUM + (int)team;

@@ -1304,9 +1304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   bounty: 0
+  currentDangerLevel: 0
   optionButton: {fileID: 5139592823585542691, guid: 1eb2ae85ce717b84eb84a0aa997bb287, type: 3}
   basicProjectile: {fileID: 8364276607121668643, guid: 6ce8c16315ef0ad48a7dd2526b56d607, type: 3}
-  basicAlien: {fileID: 77554743461439345, guid: dadcaa816adea434c8e7ad4ef13f1af7, type: 3}
+  alienObject: {fileID: 77554743461439345, guid: dadcaa816adea434c8e7ad4ef13f1af7, type: 3}
   rewardMenu: {fileID: 1237092113}
   radar: {fileID: 1323859416916505718, guid: e138fbabee60006428fb1d49be22f9f7, type: 3}
   radarHolder: {fileID: 279119850}
@@ -1314,7 +1315,9 @@ MonoBehaviour:
   deathscreen: {fileID: 905562073}
   roundCounterScreen: {fileID: 1490978927}
   roundCounterText: {fileID: 959181756}
-  alienList: []
+  alienList:
+  - {fileID: 11400000, guid: 944ca11035fe9f3479202cb4f2cf0667, type: 2}
+  rewardList: []
 --- !u!4 &1473282668
 Transform:
   m_ObjectHideFlags: 0

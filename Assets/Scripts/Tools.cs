@@ -1,5 +1,6 @@
 
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tools
@@ -25,4 +26,5 @@ public class Tools
         int randInt = (int)(randFloat * 2);
         return randInt % 2 == 0;
     }
+
 }

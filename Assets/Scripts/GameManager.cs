@@ -14,13 +14,13 @@ public class GameManager : MonoBehaviour
 
     public PlayerScript Player;
     public float bounty = 0;
-    private float currentDangerLevel;
+    [SerializeField] private float currentDangerLevel;
     private readonly List<ShipScript> existingShips = new();
     private EncounterType encounterType;
 
     [SerializeField] Button optionButton;
     [SerializeField] GameObject basicProjectile;
-    [SerializeField] AlienShipScript basicAlien;
+    [SerializeField] AlienShipScript alienObject;
     [SerializeField] RectTransform rewardMenu;
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
@@ -91,8 +91,17 @@ public class GameManager : MonoBehaviour
         }
         if (currentDangerLevel < bounty && spawnDelay <= 0 && !roundHasEnded)
         {
-            var alienShip = SpawnAlien(basicAlien);
-            currentDangerLevel += alienShip.GetComponent<AlienShipScript>().GetDangerLevel();
+            int dangerLevel = int.MaxValue;
+            ScriptableAlien alien;
+            do
+            {
+                alien = alienList[Random.Range(0, alienList.Count)];
+                dangerLevel = alien.dangerLevel;
+            } while (dangerLevel > bounty - currentDangerLevel);
+
+            var alienShip = SpawnAlien(alienObject);
+            alienShip.SetShipType(alien);
+            currentDangerLevel += alien.dangerLevel;
             existingShips.Add(alienShip);
         }
         if (!roundCanEnd && currentDangerLevel >= bounty)
@@ -180,12 +189,11 @@ public class GameManager : MonoBehaviour
     private void AddBounty(float bountyIncrease)
     {
         bounty += bountyIncrease;
-        bountyText.text = $"${bounty * 10}00";
+        bountyText.text = $"${bounty * 1000}";
     }
     private AlienShipScript SpawnAlien(AlienShipScript shipToSpawn)
     {
         var randomNum = Random.Range(-10, 10);
-        currentDangerLevel += shipToSpawn.GetDangerLevel();
         var alienShip = Instantiate(shipToSpawn);
         alienShip.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
         

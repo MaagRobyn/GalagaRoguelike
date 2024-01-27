@@ -6,8 +6,7 @@ using UnityEngine;
 public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
-    [SerializeField] private ScriptableAlien ship;
-    private int dangerLevel;
+    private ScriptableAlien alienType;
     private const int LERPFACTOR = 2000;
     private Vector3 destinationCoordinates;
 
@@ -23,21 +22,21 @@ public class AlienShipScript : ShipScript
     // Start is called before the first frame update
     void Start()
     {
-        speed = ship.speed;
-        for(int i = 0; i < cannons.Count && i < ship.cannons.Count; i++)
+        speed = alienType.speed;
+        for(int i = 0; i < cannons.Count && i < alienType.cannons.Count; i++)
         {
-            cannons[i].cannon = ship.cannons[i];
+            cannons[i].cannon = alienType.cannons[i];
             
         }
-        health = ship.health;
-        dangerLevel = ship.dangerLevel;
-        shipProjectileDamageMod = ship.damageMod;
-        shipProjectileDamageMult = ship.damageMult;
-        shipProjectileVelocityMod = ship.velocityMod;
-        shipProjectileVelocityMult = ship.velocityMult;
+        health = alienType.health;
+        shipProjectileDamageMod = alienType.damageMod;
+        shipProjectileDamageMult = alienType.damageMult;
+        shipProjectileVelocityMod = alienType.velocityMod;
+        shipProjectileVelocityMult = alienType.velocityMult;
+        transform.localScale = alienType.scale;
 
         var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = ship.sprite;
+        spriteRenderer.sprite = alienType.sprite;
 
         flightPattern = FlightPattern.Chase;
         GameManager.Instance.Player.OnPlayerDeath += () =>
@@ -100,9 +99,8 @@ public class AlienShipScript : ShipScript
             Destroy(gameObject);
         }
     }
-
-    public int GetDangerLevel()
+    public void SetShipType(ScriptableAlien type)
     {
-        return dangerLevel;
+        alienType = type;
     }
 }

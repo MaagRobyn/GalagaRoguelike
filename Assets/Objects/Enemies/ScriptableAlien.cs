@@ -7,7 +7,7 @@ public class ScriptableAlien : ScriptableObject
 {
     public Sprite sprite;
     public List<ScriptableCannon> cannons;
-    public Vector3 scale;
+    public Vector2 scale;
     public int speed;
     public int health;
     public int dangerLevel;

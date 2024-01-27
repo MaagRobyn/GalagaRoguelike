@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c89ae66b35c4e743b357efe64c72318, type: 3}
-  m_Name: BasicCannon
+  m_Name: FastCannon
   m_EditorClassIdentifier: 
-  sprite: {fileID: 7482667652216324306, guid: f886f4b92bc110940ba32b95a7d351a4, type: 3}
+  sprite: {fileID: 7482667652216324306, guid: dd07e7bd88275e3408b04c4cd7aa876f, type: 3}
   projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
-  cannonDamageMult: 1
-  cannonVelocityMult: 1
+  cannonDamageMult: 0.5
+  cannonVelocityMult: 2
   cannonDamageMod: 0
   cannonVelocityMod: 0
-  fireRate: 1
+  fireRate: 0.5
