@@ -6,6 +6,7 @@ using UnityEngine;
 public class AlienShipScript : ShipScript
 {
     [SerializeField] private GameObject Player;
+    [SerializeField] private SpriteRenderer sRenderer;
     private ScriptableAlien alienType;
     private const int LERPFACTOR = 2000;
     private Vector3 destinationCoordinates;
@@ -35,8 +36,11 @@ public class AlienShipScript : ShipScript
         shipProjectileVelocityMult = alienType.velocityMult;
         transform.localScale = alienType.scale;
 
-        var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = alienType.sprite;
+
+        sRenderer.sprite = alienType.sprite;
+        sRenderer.color = alienType.color;
+        Debug.Log($"Sprite has been set {alienType.sprite}, {sRenderer != null}");
+
 
         flightPattern = FlightPattern.Chase;
         GameManager.Instance.Player.OnPlayerDeath += () =>

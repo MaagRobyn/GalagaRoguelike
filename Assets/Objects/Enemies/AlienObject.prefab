@@ -359,15 +359,15 @@ MonoBehaviour:
   - {fileID: 4145681537387327220}
   - {fileID: 2661089127333272525}
   - {fileID: 2495493707032298154}
-  shipProjectileVelocityMult: 0
-  shipProjectileDamageMult: 0
+  shipProjectileVelocityMult: 1
+  shipProjectileDamageMult: 1
   shipProjectileVelocityMod: 0
   shipProjectileDamageMod: 0
   health: 30
   speed: 20
   team: 1
   Player: {fileID: 6316703756104425051, guid: a77c563724d2f5c429041ec27c81e50b, type: 3}
-  ship: {fileID: 11400000, guid: 944ca11035fe9f3479202cb4f2cf0667, type: 2}
+  sRenderer: {fileID: 553415677791523105}
 --- !u!50 &9007604034946557565
 Rigidbody2D:
   serializedVersion: 4
@@ -436,15 +436,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 7482667652216324306, guid: dd07e7bd88275e3408b04c4cd7aa876f, type: 3}
   m_Color: {r: 0, g: 0.7058824, b: 0.24587822, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.8828125, y: 1}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &2339609170170795858

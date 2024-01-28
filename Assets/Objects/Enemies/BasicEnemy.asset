@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: BasicEnemy
   m_EditorClassIdentifier: 
   sprite: {fileID: 7482667652216324306, guid: 7d080cbd02463c14184d5e2b7419dc91, type: 3}
+  color: {r: 0.10588236, g: 0.7686275, b: 0.18823531, a: 0}
   cannons:
   - {fileID: 11400000, guid: 5bd7b70951aa4d44faa1cfa479918b7e, type: 2}
-  scale: {x: 1, y: 1}
+  scale: {x: 1, y: 1, z: 1}
   speed: 20
   health: 30
   dangerLevel: 1
