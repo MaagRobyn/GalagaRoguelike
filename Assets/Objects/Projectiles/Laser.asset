@@ -15,5 +15,5 @@ MonoBehaviour:
   element: 1
   bulletPrefab: {fileID: 9082116615209413621, guid: 8c2b76f56c185404c814597073c1619f, type: 3}
   sprite: {fileID: 0}
-  baseDamage: 1
-  baseVelocity: 100
+  baseDamage: 2
+  baseVelocity: 60

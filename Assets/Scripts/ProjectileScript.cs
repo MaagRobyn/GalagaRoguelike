@@ -56,7 +56,7 @@ public class ProjectileScript : MonoBehaviour
         {
             if (bullet.gameObject.layer != gameObject.layer)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
         //Debug.Log("Destroyed bullet");
