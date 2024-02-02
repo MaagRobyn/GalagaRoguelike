@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: HeavyCannon
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  projectile: {fileID: 0}
-  cannonDamageMult: 0
-  cannonVelocityMult: 0
+  projectile: {fileID: 11400000, guid: 4d5373d5df0ed184f848d99490e0ee15, type: 2}
+  cannonDamageMult: 3
+  cannonVelocityMult: 0.5
   cannonDamageMod: 0
   cannonVelocityMod: 0
-  fireRate: 0
+  fireRate: 1
