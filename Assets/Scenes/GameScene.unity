@@ -1319,6 +1319,7 @@ MonoBehaviour:
   alienList:
   - {fileID: 11400000, guid: 944ca11035fe9f3479202cb4f2cf0667, type: 2}
   - {fileID: 11400000, guid: 991f0798d9678d24da3b9888df95787d, type: 2}
+  - {fileID: 11400000, guid: 587eddbe49450c04b9d59905539fb3e0, type: 2}
   rewardList: []
 --- !u!4 &1473282668
 Transform:
