@@ -12,14 +12,14 @@ TagManager:
   - Water
   - UI
   - Player
-  - Alien
-  - Despawner
+  - Enemy
+  - Enemy2
   - PlayerBullet
-  - AlienBullet
+  - EnemyBullet
+  - Enemy2Bullet
   - 
-  - 
-  - 
-  - 
+  - Despawner
+  - Reward
   - 
   - 
   - 

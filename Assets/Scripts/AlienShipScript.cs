@@ -14,10 +14,10 @@ public class AlienShipScript : ShipScript
     private FlightPattern flightPattern;
     enum FlightPattern
     {
-        Wander,
+        //Wander,
         Chase,
-        Cruise,
-        Drone
+        //Cruise,
+        //Drone
     }
 
     // Start is called before the first frame update
@@ -39,20 +39,24 @@ public class AlienShipScript : ShipScript
 
         sRenderer.sprite = alienType.sprite;
         sRenderer.color = alienType.color;
-        Debug.Log($"Sprite has been set {alienType.sprite}, {sRenderer != null}");
+        //Debug.Log($"Sprite has been set {alienType.sprite}, {sRenderer != null}");
 
 
         flightPattern = FlightPattern.Chase;
-        GameManager.Instance.Player.OnPlayerDeath += () =>
-        {
-            flightPattern = FlightPattern.Wander;
-        };
+        //GameManager.Instance.Player.OnPlayerDeath += () =>
+        //{
+        //    flightPattern = FlightPattern.Wander;
+        //};
     }
 
     // Update is called once per frame
     void Update()
     {
-        FireCannons();
+        if(flightPattern == FlightPattern.Chase)
+        {
+            FireCannons();
+
+        }
     }
 
     private void FixedUpdate()
@@ -66,18 +70,18 @@ public class AlienShipScript : ShipScript
                     return;
                 }
                 break;
-            case FlightPattern.Wander:
-                if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
-                {
-                    var x = UnityEngine.Random.Range(-1000, 1000);
-                    var y = UnityEngine.Random.Range(-1000, 1000);
-                    var z = UnityEngine.Random.Range(-1000, 1000);
-                    destinationCoordinates = new Vector3(x, y, z);
-                }
-                break;
-            case FlightPattern.Cruise:
-                rb.AddForce(Tools.GetUnitVector2(rb.rotation));
-                return;
+            //case FlightPattern.Wander:
+            //    if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
+            //    {
+            //        var x = UnityEngine.Random.Range(-1000, 1000);
+            //        var y = UnityEngine.Random.Range(-1000, 1000);
+            //        var z = UnityEngine.Random.Range(-1000, 1000);
+            //        destinationCoordinates = new Vector3(x, y, z);
+            //    }
+            //    break;
+            //case FlightPattern.Cruise:
+            //    rb.AddForce(Tools.GetUnitVector2(rb.rotation));
+            //    return;
         }
         GoToTarget(destinationCoordinates);
         RotateTowardsTarget(destinationCoordinates);

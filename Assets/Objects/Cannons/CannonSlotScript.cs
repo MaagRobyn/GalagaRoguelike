@@ -82,7 +82,7 @@ public class CannonSlotScript : MonoBehaviour
             var projectileObj = Instantiate(Projectile.bulletPrefab, transform);
             projectileObj.transform.SetPositionAndRotation(transform.position, transform.rotation);
             projectileObj.name = "Projectile";
-            projectileObj.layer = Constants.BULLET_TEAM_LAYER_NUM + (int)team;
+            projectileObj.layer = Globals.BULLET_TEAM_LAYER_NUM + (int)team;
             var projectileScript = projectileObj.GetComponent<ProjectileScript>();
             projectileScript.SetProperties(Projectile);
             projectileScript.SetDamage(damageMult * cannonDamageMult, damageMod + cannonDamageMod);

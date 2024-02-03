@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c89ae66b35c4e743b357efe64c72318, type: 3}
   m_Name: LaserCannon
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: -9095717837082945937, guid: 6d5641f46bd308a42824b752e1e93fab, type: 3}
   projectile: {fileID: 11400000, guid: 5e5f75fc8e6de7b478a97d34091210b8, type: 2}
   cannonDamageMult: 1
   cannonVelocityMult: 1
   cannonDamageMod: 0
   cannonVelocityMod: 0
-  fireRate: 0.3
+  fireRate: 0.1

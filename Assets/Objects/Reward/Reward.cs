@@ -5,8 +5,8 @@ namespace Assets
 {
     public abstract class Reward : ScriptableObject
     {
-        public string Title;
-        public string Subtitle;
+        public string title;
+        public string description;
         public Sprite sprite;
         public RewardRarity rarity;
         public enum RewardRarity

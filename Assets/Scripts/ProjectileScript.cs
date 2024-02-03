@@ -11,16 +11,31 @@ public class ProjectileScript : MonoBehaviour
     
     private int damage;
     private float velocity;
+    private Quaternion initialRotation;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Get the information about itself
-        //// Shoot projectile and adjust for 90 degree angle
-        rb.SetRotation(transform.rotation);
+        initialRotation = transform.rotation;
+        MoveProjectile();
+    }
+    void MoveProjectile()
+    {
+        MoveProjectile(velocity);
+    }
+    void MoveProjectile(float v)
+    {
+        rb.SetRotation(initialRotation);
         var unitVector = Tools.GetUnitVector2(rb.rotation + 90);
-        rb.AddForce(unitVector * velocity);
-        //Debug.Log(velocity);
+        rb.AddForce(unitVector * v);
+    }
+    private void Update()
+    {
+        if(rb.velocity.magnitude < velocity)
+        {
+            //Debug.Log($"{rb.velocity.magnitude} vs {velocity}");
+            MoveProjectile(velocity - rb.velocity.magnitude);
+        }
     }
 
     public void SetProperties(ScriptableProjectile prop)
@@ -44,11 +59,18 @@ public class ProjectileScript : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<ShipScript>(out var ship))
         {
-            if((int)ship.team != gameObject.layer - Constants.BULLET_TEAM_LAYER_NUM)
+            if((int)ship.team != gameObject.layer - Globals.BULLET_TEAM_LAYER_NUM)
             {
-                ship.TakeDamage(damage);
-                Debug.Log($"{damage}");
-                Destroy(gameObject);
+                ship.TakeDamage(damage); 
+                //Lasers pass through objects, but still damage them
+                if (properties.element != ScriptableProjectile.ProjectileElement.Laser)
+                {
+                    gameObject.SetActive(false);
+                }
+                else
+                {
+                    MoveProjectile();
+                }
             }
 
         }
@@ -57,6 +79,18 @@ public class ProjectileScript : MonoBehaviour
             if (bullet.gameObject.layer != gameObject.layer)
             {
                 gameObject.SetActive(false);
+            }
+        }else if(collision.gameObject.TryGetComponent<CrateScript>(out var reward))
+        {
+            reward.TakeDamage(damage);
+            //Lasers pass through objects, but still damage them
+            if (properties.element != ScriptableProjectile.ProjectileElement.Laser)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                MoveProjectile();
             }
         }
         //Debug.Log("Destroyed bullet");

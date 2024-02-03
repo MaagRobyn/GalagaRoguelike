@@ -12,24 +12,27 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public static GameMode gameMode;
 
+    private Camera mainCamera;
     public PlayerScript Player;
     public float bounty = 0;
     [SerializeField] private float currentDangerLevel;
     private readonly List<ShipScript> existingShips = new();
     private EncounterType encounterType;
 
+    [InspectorLabel("UI")]
     [SerializeField] Button optionButton;
-    [SerializeField] GameObject basicProjectile;
-    [SerializeField] AlienShipScript alienObject;
-    [SerializeField] RectTransform rewardMenu;
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
+    [SerializeField] RectTransform rewardMenu;
     [SerializeField] TextMeshProUGUI bountyText;
     [SerializeField] GameObject deathscreen;
     [SerializeField] GameObject roundCounterScreen;
     [SerializeField] TextMeshProUGUI roundCounterText;
 
+    [InspectorLabel("SpawnableObjects")]
+    [SerializeField] AlienShipScript alienObject;
     [SerializeField] List<ScriptableAlien> alienList = new();
+    [SerializeField] CrateScript reward;
     [SerializeField] List<ScriptableAlien> rewardList = new();
 
     readonly List<Reward> rewards = new();
@@ -47,15 +50,27 @@ public class GameManager : MonoBehaviour
     bool playerDeathEventHasBeenSet = false;
     bool playerHasDied = false;
 
-    void Start()
+    private void Awake()
     {
         Instance = this;
+        mainCamera = Camera.main;
+
+    }
+    private void StartNextRound()
+    {
+
+    }
+
+    void Start()
+    {
         AddBounty(5.0f);
         encounterType = EncounterType.Endless;
     }
+
     // Update is called once per frame
     void Update()
     {
+        // If the death event has been created but the player exists, create the death event
         if (!playerDeathEventHasBeenSet && Player != null)
         {
             playerDeathEventHasBeenSet = true;
@@ -64,50 +79,106 @@ public class GameManager : MonoBehaviour
                 playerHasDied = true;
             };
         }
-        if(deathScreenTimer > 0 && playerHasDied)
+
+        if(!playerHasDied)
         {
-            deathScreenTimer -= Time.deltaTime;
-        }
-        if(deathScreenTimer < 0)
-        {
-            deathscreen.SetActive(true);
-        }
-        if (postRoundTimer > 0 && roundHasEnded)
-        {
-            postRoundTimer -= Time.deltaTime;
-        }
-        if(postRoundTimer < 0 && roundHasEnded)
-        {
-            roundHasEnded = false;
-            if (roundCounterScreen.activeSelf)
+            if (!roundHasEnded)
             {
-                roundCounterScreen.SetActive(false);
+                // Tick Spawntimer
+                if (spawnDelay > 0)
+                {
+                    spawnDelay -= Time.deltaTime;
+                }
+                // Spawn enemy if we haven't reached the max amount of enemies for this area
+                else if (currentDangerLevel < bounty && spawnDelay <= 0)
+                {
+                    int dangerLevel = int.MaxValue;
+                    ScriptableAlien alien;
+                    do
+                    {
+                        alien = alienList[Random.Range(0, alienList.Count)];
+                        dangerLevel = alien.dangerLevel;
+                    } while (dangerLevel > bounty - currentDangerLevel);
+
+                    var alienShip = SpawnAlien(alienObject);
+                    alienShip.SetShipType(alien);
+                    currentDangerLevel += alien.dangerLevel;
+                    existingShips.Add(alienShip);
+                }
+
+                // End of Round
+                if (roundCanEnd && existingShips.Count == 0)
+                {
+                    roundHasEnded = true;
+                    Globals.gravityScale = 0;
+                    switch (encounterType)
+                    {
+                        case EncounterType.Endless:
+                            spawnDelay = 1.0f;
+                            postRoundTimer = 5.0f;
+                            roundBounty = 1.0f;
+                            currentDangerLevel = 0;
+                            roundCanEnd = false;
+                            AddBounty(roundBounty);
+                            roundCounterText.text = $"Round {roundCount} completed\nBounty Gained: ${roundBounty * 10}00";
+                            roundCounterScreen.SetActive(true);
+                            roundCount++;
+                            break;
+                        case EncounterType.Basic:
+                            spawnDelay = 0;
+                            roundCanEnd = false;
+                            currentDangerLevel = 0;
+                            AddBounty(1.0f);
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                // Tick postRoundTimer
+                if (postRoundTimer > 0)
+                {
+                    postRoundTimer -= Time.deltaTime;
+                }
+                // Display Score
+                else if (postRoundTimer < 0)
+                {
+                    postRoundTimer = 5.0f;
+                    roundHasEnded = false;
+                    if (roundCounterScreen.activeSelf)
+                    {
+                        roundCounterScreen.SetActive(false);
+
+                    }
+                }
 
             }
         }
-        if (spawnDelay > 0 && !roundHasEnded)
+        else
         {
-            spawnDelay -= Time.deltaTime;
-        }
-        if (currentDangerLevel < bounty && spawnDelay <= 0 && !roundHasEnded)
-        {
-            int dangerLevel = int.MaxValue;
-            ScriptableAlien alien;
-            do
+            // Player Died, and deathscreen hasn't shown up
+            if (deathScreenTimer > 0)
             {
-                alien = alienList[Random.Range(0, alienList.Count)];
-                dangerLevel = alien.dangerLevel;
-            } while (dangerLevel > bounty - currentDangerLevel);
+                deathScreenTimer -= Time.deltaTime;
+            }
+            // Player Died and we see death screen
+            else if (deathScreenTimer < 0)
+            {
+                deathscreen.SetActive(true);
+            }
 
-            var alienShip = SpawnAlien(alienObject);
-            alienShip.SetShipType(alien);
-            currentDangerLevel += alien.dangerLevel;
-            existingShips.Add(alienShip);
         }
+
+        // If we've reached the maxEnemeies for the area, the round can end
         if (!roundCanEnd && currentDangerLevel >= bounty)
         {
             roundCanEnd = true;
         }
+
+        // Clean up existing ships array
         for (int i = 0; i < existingShips.Count; i++)
         {
             if (existingShips[i] == null)
@@ -116,74 +187,31 @@ public class GameManager : MonoBehaviour
                 i--;
             }
         }
-        if (roundCanEnd && existingShips.Count == 0 && !roundHasEnded)
-        {
-            roundHasEnded = true;
-            switch (encounterType)
-            {
-                case EncounterType.Endless:
-                    spawnDelay = 1.0f;
-                    postRoundTimer = 5.0f;
-                    roundBounty = 1.0f;
-                    currentDangerLevel = 0;
-                    roundCanEnd = false;
-                    AddBounty(roundBounty);
-                    roundCounterText.text = $"Round {roundCount} completed\nBounty Gained: ${roundBounty * 10}00";
-                    roundCounterScreen.SetActive(true);
-                    roundCount++;
-                    break;
-                case EncounterType.Basic:
-                    spawnDelay = 0;
-                    roundCanEnd = false;
-                    currentDangerLevel = 0;
-                    AddBounty(1.0f);
-                    
-                    //Currently Bugged
-                    //OpenMenu(3);
-                    break;
-                default:
-                    break;
-            }
-        }
+
 
     }
-    private void OpenMenu(int rewardCount)
+    private void SpawnRewards(int rewardCount)
     {
-        var crewMember = new CrewMember
-        {
-            Title = "Bobby Hill",
-            Subtitle = "Gives you 10% speed boost"
-        };
-        rewards.Add(crewMember);
-
-        var buttons = new List<Button>();
-        float spacing = rewardMenu.rect.height / (rewardCount + 1) - 200f;
+        List<GameObject> rewardObjs = new();
         for (int i = 0; i < rewardCount; i++)
         {
-            var reward = rewards[Random.Range(0, rewards.Count - 1)];
-            var transform = rewardMenu.transform;
-            transform.position = new Vector3(0, (spacing * (i + 1)));
-            var button = Instantiate(optionButton, transform);
-            buttons.Add(button);
-            var textBoxes = button.GetComponentsInChildren<TextMeshPro>();
-            foreach (var textBox in textBoxes)
+            var randReward = rewards[Random.Range(0, rewards.Count - 1)];
+            reward.reward = randReward;
+            var rewardContainer = new GameObject();
+            rewardContainer.name = $"{randReward.name} - Box";
+            rewardContainer.transform.SetPositionAndRotation(new Vector3(i * 100, 0), rewardContainer.transform.rotation);
+            Instantiate(reward, rewardContainer.transform);
+            reward.OnBoxDestroyed += () =>
             {
-                if (textBox.gameObject.name.ToLower().Contains("subtitle"))
+                while (rewardObjs.Count > 0)
                 {
-                    textBox.text = crewMember.Subtitle;
+                    rewardObjs[0].SetActive(false);
+                    rewardObjs.RemoveAt(0);
                 }
-                else if (textBox.gameObject.name.ToLower().Contains("title"))
-                {
-                    textBox.text = crewMember.Title;
-                }
-            }
-            button.onClick.AddListener(() =>
-            {
-                while (buttons.Count > 0)
-                {
-                    Destroy(buttons[0]);
-                }
-            });
+            };
+
+            var radarObj = Instantiate(radar, radarHolder);
+            radarObj.matchingObject = rewardContainer;
         }
     }
     private void AddBounty(float bountyIncrease)
@@ -198,7 +226,7 @@ public class GameManager : MonoBehaviour
         alienShip.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
         
         var radarObj = Instantiate(radar, radarHolder);
-        radarObj.matchingShip = alienShip;
+        radarObj.matchingObject = alienShip.gameObject;
         spawnDelay = 1.0f;
         return alienShip;
     }
@@ -214,7 +242,8 @@ public class GameManager : MonoBehaviour
     public enum Team
     {
         Player = 0,
-        Alien = 1
+        Enemy = 1,
+        Enemy2 = 2
     }
     private enum EncounterType
     {
