@@ -1664,19 +1664,19 @@ MonoBehaviour:
   bounty: 0
   currentDangerLevel: 0
   optionButton: {fileID: 5139592823585542691, guid: 1eb2ae85ce717b84eb84a0aa997bb287, type: 3}
-  basicProjectile: {fileID: 8364276607121668643, guid: 6ce8c16315ef0ad48a7dd2526b56d607, type: 3}
-  alienObject: {fileID: 77554743461439345, guid: dadcaa816adea434c8e7ad4ef13f1af7, type: 3}
-  rewardMenu: {fileID: 1237092113}
   radar: {fileID: 1323859416916505718, guid: e138fbabee60006428fb1d49be22f9f7, type: 3}
   radarHolder: {fileID: 279119850}
+  rewardMenu: {fileID: 1237092113}
   bountyText: {fileID: 1842955385}
   deathscreen: {fileID: 905562073}
   roundCounterScreen: {fileID: 1490978927}
   roundCounterText: {fileID: 959181756}
+  alienObject: {fileID: 77554743461439345, guid: dadcaa816adea434c8e7ad4ef13f1af7, type: 3}
   alienList:
   - {fileID: 11400000, guid: 944ca11035fe9f3479202cb4f2cf0667, type: 2}
   - {fileID: 11400000, guid: 991f0798d9678d24da3b9888df95787d, type: 2}
   - {fileID: 11400000, guid: 587eddbe49450c04b9d59905539fb3e0, type: 2}
+  reward: {fileID: 0}
   rewardList: []
 --- !u!4 &1473282668
 Transform:
@@ -2548,7 +2548,7 @@ MonoBehaviour:
   health: 100
   speed: 10
   team: 0
-  rotationSpeed: 2
+  rotationSpeed: 0.25
   healthbar: {fileID: 697278890}
   playerSprite: {fileID: 339135379}
 --- !u!1 &8989359012407521200

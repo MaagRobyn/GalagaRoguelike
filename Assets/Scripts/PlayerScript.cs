@@ -63,6 +63,11 @@ public class PlayerScript : ShipScript
         {
             FireCannons();
         }
+        Reward reward;
+        while(newRewards.TryDequeue(out reward))
+        {
+            obtainedRewards.Add(reward);
+        }
     }
 
 

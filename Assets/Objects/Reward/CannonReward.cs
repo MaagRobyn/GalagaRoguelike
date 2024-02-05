@@ -6,9 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="Reward/Cannon")]
 public class CannonReward : Reward
 {
-    public override void GiveReward()
-    {
-        throw new System.NotImplementedException();
-    }
 
 }

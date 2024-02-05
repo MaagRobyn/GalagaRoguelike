@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets
@@ -17,6 +19,5 @@ namespace Assets
             Legendary,
             Unique
         }
-        public abstract void GiveReward();
     }
 }
