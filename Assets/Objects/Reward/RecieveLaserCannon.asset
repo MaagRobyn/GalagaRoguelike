@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0cf1ef4b0d0b1341a8d1114050428ac, type: 3}
-  m_Name: Todd From Mario
+  m_Script: {fileID: 11500000, guid: 4e05269aab9d38e4bb67c5d88380590d, type: 3}
+  m_Name: RecieveLaserCannon
   m_EditorClassIdentifier: 
-  title: Todd
-  description: He's from Mario
+  title: Laser Cannon
+  description: 
   sprite: {fileID: 0}
   rarity: 0
+  cannon: {fileID: 11400000, guid: d3cfd7e9cced0fc47afba75cf5993a84, type: 2}

@@ -15,4 +15,12 @@ namespace Assets.Objects.Reward
             
         }
     }
+    public class NewCannonAction : IRewardAction
+    {
+        public ScriptableCannon cannon;
+        public void GiveReward(PlayerScript player, float factor)
+        {
+            player.cannons[(int)factor].cannon = cannon;
+        }
+    }
 }

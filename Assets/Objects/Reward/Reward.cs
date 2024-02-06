@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Objects.Reward;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Assets
         public string description;
         public Sprite sprite;
         public RewardRarity rarity;
+        public IRewardAction action;
+
         public enum RewardRarity
         {
             Common,

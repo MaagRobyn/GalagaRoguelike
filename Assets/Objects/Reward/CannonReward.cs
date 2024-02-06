@@ -6,5 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="Reward/Cannon")]
 public class CannonReward : Reward
 {
-
+    public ScriptableCannon cannon;
 }
