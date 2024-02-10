@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RecieveLaserCannon
   m_EditorClassIdentifier: 
   title: Laser Cannon
-  description: 
-  sprite: {fileID: 0}
+  description: Gives you a laser cannon
+  sprite: {fileID: 21300000, guid: 2798241b6827d2741a22c9628ee5d072, type: 3}
   rarity: 0
   cannon: {fileID: 11400000, guid: d3cfd7e9cced0fc47afba75cf5993a84, type: 2}

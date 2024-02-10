@@ -16,7 +16,7 @@ public class CrateScript : MonoBehaviour
 
     private void Start()
     {
-        titleObj.text = reward.name;
+        titleObj.text = reward.title;
         descriptionObj.text = reward.description;
     }
     public void TakeDamage(float damage)

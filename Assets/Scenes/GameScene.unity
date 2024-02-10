@@ -1676,8 +1676,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 944ca11035fe9f3479202cb4f2cf0667, type: 2}
   - {fileID: 11400000, guid: 991f0798d9678d24da3b9888df95787d, type: 2}
   - {fileID: 11400000, guid: 587eddbe49450c04b9d59905539fb3e0, type: 2}
-  reward: {fileID: 0}
-  rewardList: []
+  reward: {fileID: 842051997591726650, guid: eb3985990400ba9438d886fd3616b879, type: 3}
+  rewardList:
+  - {fileID: 11400000, guid: 0a810a188163d784ca8b80d6fe8cea5b, type: 2}
+  - {fileID: 11400000, guid: 91ba68894142abc4fb3a59ce0257a200, type: 2}
 --- !u!4 &1473282668
 Transform:
   m_ObjectHideFlags: 0

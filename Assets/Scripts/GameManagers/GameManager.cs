@@ -33,9 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AlienShipScript alienObject;
     [SerializeField] List<ScriptableAlien> alienList = new();
     [SerializeField] CrateScript reward;
-    [SerializeField] List<ScriptableAlien> rewardList = new();
-
-    readonly List<Reward> rewards = new();
+    [SerializeField] List<Reward> rewardList = new();
 
     bool roundHasEnded = false;
     bool roundCanEnd = false;
@@ -64,7 +62,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         AddBounty(5.0f);
-        encounterType = EncounterType.Endless;
+        encounterType = EncounterType.Basic;
     }
 
     // Update is called once per frame
@@ -129,7 +127,7 @@ public class GameManager : MonoBehaviour
                             roundCanEnd = false;
                             currentDangerLevel = 0;
                             AddBounty(1.0f);
-
+                            SpawnRewards(2);
                             break;
                         default:
                             break;
@@ -195,7 +193,9 @@ public class GameManager : MonoBehaviour
         List<GameObject> rewardObjs = new();
         for (int i = 0; i < rewardCount; i++)
         {
-            var randReward = rewards[Random.Range(0, rewards.Count - 1)];
+            var index = Random.Range(0, rewardList.Count - 1);
+            Debug.Log(index);
+            var randReward = rewardList[index];
             reward.reward = randReward;
             var rewardContainer = new GameObject();
             rewardContainer.name = $"{randReward.name} - Box";
