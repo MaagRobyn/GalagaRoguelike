@@ -74,7 +74,17 @@ public class GameManager : MonoBehaviour
         else
         {
             AddBounty(5.0f);
-            encounterType = EncounterType.Endless;
+            switch (gameMode)
+            {
+                case GameMode.Story:
+                    encounterType = EncounterType.Basic;
+                    break;
+                case GameMode.Endless:
+                    encounterType = EncounterType.Endless;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
