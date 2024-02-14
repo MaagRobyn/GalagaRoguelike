@@ -21,7 +21,7 @@ namespace Assets.Scripts
 
         private void FixedUpdate()
         {
-            if (matchingObject == null || matchingObject.IsDestroyed())
+            if (matchingObject == null || matchingObject.IsDestroyed() || !matchingObject.gameObject.activeSelf)
             {
                 Destroy(gameObject);
             }

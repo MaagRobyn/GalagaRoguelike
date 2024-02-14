@@ -80,7 +80,8 @@ public class ProjectileScript : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }
-        }else if(collision.gameObject.TryGetComponent<CrateScript>(out var reward))
+        }
+        else if(collision.gameObject.TryGetComponent<CrateScript>(out var reward))
         {
             reward.TakeDamage(damage);
             //Lasers pass through objects, but still damage them
@@ -92,6 +93,9 @@ public class ProjectileScript : MonoBehaviour
             {
                 MoveProjectile();
             }
+        }else
+        {
+            Debug.Log(collision.gameObject.name);
         }
         //Debug.Log("Destroyed bullet");
     }

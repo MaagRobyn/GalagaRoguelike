@@ -14,12 +14,17 @@ public class GameManager : MonoBehaviour
 
     private Camera mainCamera;
     public PlayerScript Player;
-    public float bounty = 0;
     [SerializeField] private float currentDangerLevel;
     private readonly List<ShipScript> existingShips = new();
+    public float bounty = 0;
     private EncounterType encounterType;
+    
+    [Header("Debug")]
+    [SerializeField] private bool useDebugSettings;
+    [SerializeField] private float debugBounty = 0.0f;
+    [SerializeField] private EncounterType debugEncounterType;
 
-    [InspectorLabel("UI")]
+    [Header("UI")]
     [SerializeField] Button optionButton;
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
@@ -29,7 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject roundCounterScreen;
     [SerializeField] TextMeshProUGUI roundCounterText;
 
-    [InspectorLabel("SpawnableObjects")]
+    [Header("SpawnableObjects")]
     [SerializeField] AlienShipScript alienObject;
     [SerializeField] List<ScriptableAlien> alienList = new();
     [SerializeField] CrateScript reward;
@@ -61,8 +66,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        AddBounty(5.0f);
-        encounterType = EncounterType.Basic;
+        if (useDebugSettings)
+        {
+            AddBounty(debugBounty);
+            encounterType = debugEncounterType;
+        }
+        else
+        {
+            AddBounty(5.0f);
+            encounterType = EncounterType.Endless;
+        }
     }
 
     // Update is called once per frame
@@ -109,23 +122,21 @@ public class GameManager : MonoBehaviour
                 {
                     roundHasEnded = true;
                     Globals.gravityScale = 0;
+                    roundCanEnd = false;
+                    currentDangerLevel = 0;
                     switch (encounterType)
                     {
                         case EncounterType.Endless:
                             spawnDelay = 1.0f;
                             postRoundTimer = 5.0f;
                             roundBounty = 1.0f;
-                            currentDangerLevel = 0;
-                            roundCanEnd = false;
                             AddBounty(roundBounty);
                             roundCounterText.text = $"Round {roundCount} completed\nBounty Gained: ${roundBounty * 10}00";
                             roundCounterScreen.SetActive(true);
                             roundCount++;
                             break;
                         case EncounterType.Basic:
-                            spawnDelay = 0;
-                            roundCanEnd = false;
-                            currentDangerLevel = 0;
+                            spawnDelay = 5.0f;
                             AddBounty(1.0f);
                             SpawnRewards(2);
                             break;
@@ -136,22 +147,26 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // Tick postRoundTimer
-                if (postRoundTimer > 0)
+                if(encounterType == EncounterType.Endless)
                 {
-                    postRoundTimer -= Time.deltaTime;
-                }
-                // Display Score
-                else if (postRoundTimer < 0)
-                {
-                    postRoundTimer = 5.0f;
-                    roundHasEnded = false;
-                    if (roundCounterScreen.activeSelf)
-                    {
-                        roundCounterScreen.SetActive(false);
 
+                    if (postRoundTimer > 0)
+                    {
+                        postRoundTimer -= Time.deltaTime;
+                    }
+                    // Display Score
+                    else if (postRoundTimer < 0)
+                    {
+                        postRoundTimer = 5.0f;
+                        roundHasEnded = false;
+                        if (roundCounterScreen.activeSelf)
+                        {
+                            roundCounterScreen.SetActive(false);
+
+                        }
                     }
                 }
+                // Tick postRoundTimer
 
             }
         }
@@ -200,15 +215,18 @@ public class GameManager : MonoBehaviour
             var rewardContainer = new GameObject();
             rewardContainer.name = $"{randReward.name} - Box";
             rewardContainer.transform.SetPositionAndRotation(new Vector3(i * 100, 0), rewardContainer.transform.rotation);
-            Instantiate(reward, rewardContainer.transform);
-            reward.OnBoxDestroyed += () =>
+            var crate = Instantiate(reward, rewardContainer.transform);
+            crate.OnBoxDestroyed += () =>
             {
+                Debug.Log("Box Destroyed");
                 while (rewardObjs.Count > 0)
                 {
                     rewardObjs[0].SetActive(false);
                     rewardObjs.RemoveAt(0);
                 }
+                roundHasEnded = false;
             };
+            rewardObjs.Add(rewardContainer);
 
             var radarObj = Instantiate(radar, radarHolder);
             radarObj.matchingObject = rewardContainer;
@@ -248,7 +266,8 @@ public class GameManager : MonoBehaviour
     private enum EncounterType
     {
         Endless,
-        Basic
+        Basic,
+        Debug
     }
     public enum GameMode
     {

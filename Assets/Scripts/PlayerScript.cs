@@ -19,7 +19,7 @@ public class PlayerScript : ShipScript
 
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
-    readonly List<Reward> obtainedRewards = new();
+    public List<Reward> obtainedRewards = new();
     public Queue<Reward> newRewards = new();
 
     float respawnTimer = 5;
@@ -101,7 +101,7 @@ public class PlayerScript : ShipScript
 
 
             //Non-static Camera
-            rb.SetRotation(rb.rotation + rotation * rotationSpeed);
+            rb.SetRotation(rb.rotation + -rotation * rotationSpeed);
             
             // Static Camera
             //var mousePosition = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
