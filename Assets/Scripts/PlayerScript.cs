@@ -1,4 +1,5 @@
 using Assets;
+using Assets.Objects.Reward;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ public class PlayerScript : ShipScript
     [SerializeField] SpriteRenderer playerSprite;
     public List<Reward> obtainedRewards = new();
     public Queue<Reward> newRewards = new();
+    public List<CrewMember> crewMembers = new();
 
     float respawnTimer = 5;
 
@@ -59,6 +61,14 @@ public class PlayerScript : ShipScript
             }
         }
 
+        foreach(var r in obtainedRewards)
+        {
+            if(r.isContinuous)
+            {
+                r.action.GiveReward(this);
+            }
+        }
+
         if (health > 0 && fire1 > 0 && boost <= 0)
         {
             FireCannons();
@@ -67,6 +77,7 @@ public class PlayerScript : ShipScript
         while(newRewards.TryDequeue(out reward))
         {
             obtainedRewards.Add(reward);
+            reward.action.GiveReward(this);
         }
     }
 
@@ -126,7 +137,7 @@ public class PlayerScript : ShipScript
     }
     public void AddReward(Reward reward)
     {
-        obtainedRewards.Add(reward);
+        newRewards.Enqueue(reward);
     }
 
     #region Events

@@ -5,23 +5,24 @@ namespace Assets.Objects.Reward
 {
     public interface IRewardAction
     {
-        public void GiveReward(PlayerScript player, float factor);
+        public void GiveReward(PlayerScript player, int factor = 0);
     }
 
     public class CrewAction : IRewardAction
     {
-        public void GiveReward(PlayerScript player, float factor)
+        public CrewMember crew;
+        public void GiveReward(PlayerScript player, int factor = 0)
         {
-            
+            player.crewMembers.Add(crew);
         }
     }
     public class NewCannonAction : IRewardAction
     {
         public Canvas OptionMenu;
         public ScriptableCannon cannon;
-        public void GiveReward(PlayerScript player, float factor)
+        public void GiveReward(PlayerScript player, int factor = 0)
         {
-            player.cannons[(int)factor].cannon = cannon;
+            player.cannons[factor].cannon = cannon;
         }
     }
 }

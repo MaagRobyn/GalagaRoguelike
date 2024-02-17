@@ -8,6 +8,7 @@ namespace Assets
 {
     public abstract class Reward : ScriptableObject
     {
+        public bool isContinuous;
         public string title;
         public string description;
         public Sprite sprite;
