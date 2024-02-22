@@ -18,4 +18,4 @@ MonoBehaviour:
   cannonVelocityMult: 1
   cannonDamageMod: 0
   cannonVelocityMod: 0
-  fireRate: 0.1
+  fireRate: 0.2

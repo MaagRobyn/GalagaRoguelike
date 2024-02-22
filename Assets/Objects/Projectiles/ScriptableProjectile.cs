@@ -9,7 +9,9 @@ public class ScriptableProjectile : ScriptableObject
     public ProjectileElement element;
     public GameObject bulletPrefab;
     public Sprite sprite;
+    [Min(1)]
     public int baseDamage;
+    [Min(1)]
     public float baseVelocity;
     public enum ProjectileElement
     {

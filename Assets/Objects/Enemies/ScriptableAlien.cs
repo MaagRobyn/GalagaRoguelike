@@ -12,8 +12,12 @@ public class ScriptableAlien : ScriptableObject
     public int speed;
     public int health;
     public int dangerLevel;
-    public float velocityMod;
-    public int damageMod;
+    [Min(0.001f)]
     public float velocityMult;
+    [Min(0.001f)]
     public float damageMult;
+    [Min(0)]
+    public float velocityMod;
+    [Min(0)]
+    public int damageMod;
 }

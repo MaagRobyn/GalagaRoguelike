@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject deathscreen;
     [SerializeField] GameObject roundCounterScreen;
     [SerializeField] TextMeshProUGUI roundCounterText;
+    [SerializeField] Slot slotPrefab;
 
     [Header("SpawnableObjects")]
     [SerializeField] AlienShipScript alienObject;
