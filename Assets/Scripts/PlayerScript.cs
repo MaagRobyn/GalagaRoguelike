@@ -1,4 +1,5 @@
 using Assets;
+using Assets.Objects.Reward;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,18 +13,23 @@ public class PlayerScript : ShipScript
     public float rotationSpeed;
     float horizontal;
     float vertical;
-    float jump;
+    float fire1;
+    float boost;
     float rotation;
+    float zoom;
 
     [SerializeField] Slider healthbar;
     [SerializeField] SpriteRenderer playerSprite;
-    readonly List<Reward> obtainedRewards = new();
+    public List<Reward> obtainedRewards = new();
+    public Queue<Reward> newRewards = new();
+    public List<CrewMember> crewMembers = new();
 
     float respawnTimer = 5;
 
     // Start is called before the first frame update
     void Start()
     {
+        //Static Camera
         healthbar.value = health;
     }
 
@@ -33,8 +39,10 @@ public class PlayerScript : ShipScript
         GameManager.Instance.Player = this;
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
-        jump = Input.GetAxisRaw("Jump");
-        rotation = Input.GetAxisRaw("Rotation");
+        fire1 = Input.GetAxisRaw("Fire1");
+        boost = Input.GetAxisRaw("Fire3");
+        rotation = Input.GetAxis("Rotation");
+        zoom = Input.GetAxisRaw("Zoom");
         if (Input.GetAxisRaw("Close") == 1)
         {
             Debug.Log("Quitting Game");
@@ -53,9 +61,23 @@ public class PlayerScript : ShipScript
             }
         }
 
-        if (health > 0 && jump > 0)
+        foreach(var r in obtainedRewards)
+        {
+            if(r.isContinuous)
+            {
+                r.action.GiveReward(this);
+            }
+        }
+
+        if (health > 0 && fire1 > 0 && boost <= 0)
         {
             FireCannons();
+        }
+        Reward reward;
+        while(newRewards.TryDequeue(out reward))
+        {
+            obtainedRewards.Add(reward);
+            reward.action.GiveReward(this);
         }
     }
 
@@ -64,13 +86,39 @@ public class PlayerScript : ShipScript
     {
         if (health > 0)
         {
-            var verticalVector = Tools.GetUnitVector2(rb.rotation);
-            var horizontalVector = Tools.GetUnitVector2(rb.rotation + 90);
-            rb.velocity = horizontal * speed * verticalVector + speed * vertical * horizontalVector;
-            //var velocity = new Vector2(horizontal, vertical);
-            //velocity.Normalize();
-            //rb.velocity = velocity * speed;
-            rb.SetRotation(rb.rotation + rotation * rotationSpeed);
+            //Non-static Camera
+            var horizontalVector = Tools.GetUnitVector2(rb.rotation);
+            var verticalVector = Tools.GetUnitVector2(rb.rotation + 90);
+            rb.velocity = (boost + 1) * speed * (verticalVector * vertical + horizontal * horizontalVector);
+            if ((zoom > 0 && Camera.main.orthographicSize < 20) || (zoom < 0 && Camera.main.orthographicSize > 5))
+            {
+                Camera.main.orthographicSize -= zoom * 5;
+            }
+
+            // Static Camera
+            //var movement = new Vector2();
+            //Check if player is in camera bounds
+            //if (Camera.main.WorldToScreenPoint(transform.position).x < playerSprite.size.x && horizontal < 0 ||
+            //    (Camera.main.WorldToScreenPoint(transform.position).x > Camera.main.scaledPixelWidth - playerSprite.size.y && horizontal > 0))
+            //{
+            //movement.x = horizontal * speed;
+            //}
+            //if (Camera.main.WorldToScreenPoint(transform.position).y < playerSprite.size.y && vertical < 0 ||
+            //    (Camera.main.WorldToScreenPoint(transform.position).y > Camera.main.scaledPixelHeight - playerSprite.size.y && vertical > 0))
+            //{
+            //movement.y = vertical * speed;
+            //}
+            //rb.velocity = movement;
+
+
+            //Non-static Camera
+            rb.SetRotation(rb.rotation + -rotation * rotationSpeed);
+            
+            // Static Camera
+            //var mousePosition = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+            //Debug.Log(mousePosition);
+            
+            //rb.SetRotation(Tools.FindAngleBetweenTwoPositions(transform.position, mousePosition));
         }
 
     }
@@ -89,7 +137,7 @@ public class PlayerScript : ShipScript
     }
     public void AddReward(Reward reward)
     {
-        obtainedRewards.Add(reward);
+        newRewards.Enqueue(reward);
     }
 
     #region Events

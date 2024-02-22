@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FastEnemy
   m_EditorClassIdentifier: 
   sprite: {fileID: -9095717837082945937, guid: 6d5641f46bd308a42824b752e1e93fab, type: 3}
-  color: {r: 0.09411766, g: 0.09411766, b: 0.098039225, a: 0}
+  color: {r: 0.09411766, g: 0.09411766, b: 0.098039225, a: 1}
   cannons:
   - {fileID: 11400000, guid: 131641218152c46479e02e34ddfb3532, type: 2}
   - {fileID: 11400000, guid: 131641218152c46479e02e34ddfb3532, type: 2}
@@ -24,4 +24,4 @@ MonoBehaviour:
   velocityMod: 2
   damageMod: 0
   velocityMult: 1
-  damageMult: 0.5
+  damageMult: 1

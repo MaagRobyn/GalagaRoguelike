@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     public class RadarScript : MonoBehaviour
     {
-        public ShipScript matchingShip;
+        public GameObject matchingObject;
         public Image radar;
         private const int RADAR_RADIUS = 13;
 
@@ -21,7 +21,7 @@ namespace Assets.Scripts
 
         private void FixedUpdate()
         {
-            if (matchingShip == null || matchingShip.IsDestroyed())
+            if (matchingObject == null || matchingObject.IsDestroyed() || !matchingObject.gameObject.activeSelf)
             {
                 Destroy(gameObject);
             }
@@ -34,7 +34,7 @@ namespace Assets.Scripts
         private void RotateTowardsTarget()
         {
             var cameraTransform = GameManager.Instance.Player.GetComponentInChildren<Camera>().transform;
-            var distance = Vector3.Distance(matchingShip.transform.position, GameManager.Instance.Player.transform.position);
+            var distance = Vector3.Distance(matchingObject.transform.position, GameManager.Instance.Player.transform.position);
             //Debug.Log(distance);
             if (radar.enabled && distance <= RADAR_RADIUS)
             {
@@ -44,7 +44,7 @@ namespace Assets.Scripts
             {
                 radar.enabled = true;
             }
-            var angle = Tools.FindAngleBetweenTwoPositions(cameraTransform.position, matchingShip.transform.position);
+            var angle = Tools.FindAngleBetweenTwoPositions(cameraTransform.position, matchingObject.transform.position);
             var angles = (Vector3.forward * angle) - cameraTransform.eulerAngles;
             transform.eulerAngles = angles;
 

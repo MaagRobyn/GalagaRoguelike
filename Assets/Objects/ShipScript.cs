@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class ShipScript : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D rb;
-    [SerializeField] protected List<CannonSlotScript> cannons = new();
+    [SerializeField] public List<CannonSlotScript> cannons = new();
 
     [SerializeField] protected float shipProjectileVelocityMult;
     [SerializeField] protected float shipProjectileDamageMult;

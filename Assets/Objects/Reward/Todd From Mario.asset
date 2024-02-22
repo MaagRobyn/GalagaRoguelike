@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a33056a26fd57cc4fac4c0261b81da27, type: 3}
-  m_Name: Laser
+  m_Script: {fileID: 11500000, guid: c0cf1ef4b0d0b1341a8d1114050428ac, type: 3}
+  m_Name: Todd From Mario
   m_EditorClassIdentifier: 
-  element: 1
-  bulletPrefab: {fileID: 9082116615209413621, guid: 8c2b76f56c185404c814597073c1619f, type: 3}
+  title: Todd
+  description: He's from Mario
   sprite: {fileID: 0}
-  baseDamage: 8
-  baseVelocity: 60
+  rarity: 0

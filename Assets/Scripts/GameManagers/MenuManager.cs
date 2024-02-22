@@ -58,13 +58,13 @@ public class MenuManager : MonoBehaviour
         endlessButton.onClick.AddListener(() =>
         {
             GameManager.gameMode = GameManager.GameMode.Endless;
-            SceneManager.LoadScene(Constants.GAME_SCENE);
+            SceneManager.LoadScene(Globals.GAME_SCENE);
 
         });
         storyButton.onClick.AddListener(() =>
         {
             GameManager.gameMode = GameManager.GameMode.Story;
-            SceneManager.LoadScene(Constants.GAME_SCENE);
+            SceneManager.LoadScene(Globals.GAME_SCENE);
 
         });
     }

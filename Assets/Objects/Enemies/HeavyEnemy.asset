@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58cc6181632aada4f91983f3cc1f4b83, type: 3}
-  m_Name: BasicEnemy
+  m_Name: HeavyEnemy
   m_EditorClassIdentifier: 
-  sprite: {fileID: 7482667652216324306, guid: 7d080cbd02463c14184d5e2b7419dc91, type: 3}
-  color: {r: 0.10588236, g: 0.7686275, b: 0.18823531, a: 1}
+  sprite: {fileID: 7482667652216324306, guid: dd07e7bd88275e3408b04c4cd7aa876f, type: 3}
+  color: {r: 0.25490198, g: 0.64705884, b: 0.9333334, a: 1}
   cannons:
+  - {fileID: 11400000, guid: 4946df5f731b0ba4eaa8efe1816e3bb1, type: 2}
   - {fileID: 11400000, guid: 5bd7b70951aa4d44faa1cfa479918b7e, type: 2}
-  scale: {x: 1, y: 1, z: 1}
-  speed: 20
-  health: 30
-  dangerLevel: 1
-  velocityMod: 1
+  - {fileID: 11400000, guid: 5bd7b70951aa4d44faa1cfa479918b7e, type: 2}
+  scale: {x: 2, y: 2, z: 1}
+  speed: 10
+  health: 100
+  dangerLevel: 5
+  velocityMod: 0
   damageMod: 0
-  velocityMult: 1
+  velocityMult: 0.6
   damageMult: 1
