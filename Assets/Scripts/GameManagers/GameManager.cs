@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,12 +29,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button optionButton;
     [SerializeField] RadarScript radar;
     [SerializeField] Transform radarHolder;
-    [SerializeField] RectTransform rewardMenu;
+    [SerializeField] GameObject rewardMenu;
     [SerializeField] TextMeshProUGUI bountyText;
     [SerializeField] GameObject deathscreen;
     [SerializeField] GameObject roundCounterScreen;
     [SerializeField] TextMeshProUGUI roundCounterText;
     [SerializeField] Slot slotPrefab;
+    [SerializeField] Draggable itemPrefab;
 
     [Header("SpawnableObjects")]
     [SerializeField] AlienShipScript alienObject;
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         Instance = this;
         mainCamera = Camera.main;
 
@@ -223,8 +226,10 @@ public class GameManager : MonoBehaviour
             Debug.Log(index);
             var randReward = rewardList[index];
             reward.reward = randReward;
-            var rewardContainer = new GameObject();
-            rewardContainer.name = $"{randReward.name} - Box";
+            var rewardContainer = new GameObject
+            {
+                name = $"{randReward.name} - Box"
+            };
             rewardContainer.transform.SetPositionAndRotation(new Vector3(i * 100, 0), rewardContainer.transform.rotation);
             var crate = Instantiate(reward, rewardContainer.transform);
             crate.OnBoxDestroyed += () =>
@@ -236,6 +241,13 @@ public class GameManager : MonoBehaviour
                     rewardObjs.RemoveAt(0);
                 }
                 roundHasEnded = false;
+
+                if(reward.GetType() == typeof(CannonReward))
+                {
+                    ShowCannonRewardMenu();
+
+                }
+
             };
             rewardObjs.Add(rewardContainer);
 
@@ -243,6 +255,54 @@ public class GameManager : MonoBehaviour
             radarObj.matchingObject = rewardContainer;
         }
     }
+
+    private void ShowCannonRewardMenu()
+    {
+        rewardMenu.SetActive(true);
+        var cannonCount = Player.cannons.Count;
+        var spacing = cannonCount > 1 ? (cannonCount - 1) / 1000 : 1;
+        for (int i = 0; i < Player.cannons.Count; i++)
+        {
+            var cannonSlot = Player.cannons[i];
+            var position = new Vector3(-500 + spacing * i, 0, 0);
+            var slot = AddSlot(position, rewardMenu.transform, cannonSlot);
+            slot.name = $"Cannon Slot {i + 1}";
+            if (cannonSlot.isSlotFilled)
+            {
+                AddDraggable(position, cannonSlot.cannon.projectile.sprite).name = 
+                    $"{cannonSlot.cannon.projectile.name}";
+
+            }
+            slot.OnDropEvent += () =>
+            {
+
+            };
+        }
+    }
+
+
+    private Slot AddSlot(Vector3 position, Transform parent, CannonSlotScript reward)
+    {
+        var slot = Instantiate(slotPrefab, parent);
+        slot.GetComponent<RectTransform>().localPosition = position;
+        var data = slot.GetComponent<SlotData>();
+        data.Title = reward.cannon.name;
+        data.Subtitle = $"DPS: {reward.cannon.cannonDamageMult * (reward.cannon.cannonDamageMod + reward.cannon.projectile.baseDamage)}" +
+            $"\nVelocity: {reward.cannon.cannonVelocityMult * (reward.cannon.cannonVelocityMod + reward.cannon.projectile.baseVelocity)}" +
+            $"\nFire Rate {reward.cannon.fireRate}";
+        return slot;
+    }
+
+    private Draggable AddDraggable(Vector3 position, Sprite sprite)
+    {
+        // Display Projectile Sprite in that slot
+        var draggable = Instantiate(itemPrefab, rewardMenu.transform);
+        draggable.GetComponent<RectTransform>().localPosition = position;
+        draggable.GetComponent<Image>().sprite = sprite;
+
+        return draggable;
+    }
+
     private void AddBounty(float bountyIncrease)
     {
         bounty += bountyIncrease;

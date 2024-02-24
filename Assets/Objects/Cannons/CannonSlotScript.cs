@@ -18,19 +18,19 @@ public class CannonSlotScript : MonoBehaviour
     float cannonVelocityMod;
     float fireRate;
 
-    public delegate void CannonEquip();
+    public delegate void CannonEquip(ScriptableCannon c);
     public event CannonEquip OnCannonEquipped;
     private float fireTimer;
 
-    protected virtual void InvokeCannonEquip()
+    protected virtual void InvokeCannonEquip(ScriptableCannon cannon)
     {
-        OnCannonEquipped?.Invoke();
+        OnCannonEquipped?.Invoke(cannon);
     }
 
     private void Start()
     {
         isSlotFilled = false;
-        OnCannonEquipped += () =>
+        OnCannonEquipped += (c) =>
         {
             if(cannon != null && !isSlotFilled)
             {
@@ -51,7 +51,7 @@ public class CannonSlotScript : MonoBehaviour
         {
             if(!isSlotFilled)
             {
-                InvokeCannonEquip();
+                EquipCannon(cannon);
 
             }
             else
@@ -94,6 +94,6 @@ public class CannonSlotScript : MonoBehaviour
     public void EquipCannon(ScriptableCannon newCannon)
     {
         cannon = newCannon;
-        InvokeCannonEquip();
+        InvokeCannonEquip(newCannon);
     }
 }
