@@ -95,6 +95,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateTimers();
+        
         // If the death event has been created but the player exists, create the death event
         if (!playerDeathEventHasBeenSet && Player != null)
         {
@@ -217,6 +219,7 @@ public class GameManager : MonoBehaviour
 
 
     }
+
     private void SpawnRewards(int rewardCount)
     {
         List<GameObject> rewardObjs = new();
@@ -273,9 +276,13 @@ public class GameManager : MonoBehaviour
                     $"{cannonSlot.cannon.projectile.name}";
 
             }
-            slot.OnDropEvent += () =>
+            slot.OnDropEvent += d =>
             {
-
+                if (d != null && d.draggableObject != null && d.draggableObject.TryGetComponent(out CannonSlotScript cSlot))
+                {
+                    var tmp = Player.cannons[i];
+                    Player.cannons[i] = cSlot;
+                }
             };
         }
     }
@@ -328,6 +335,14 @@ public class GameManager : MonoBehaviour
             AddBounty(5);
         }
     }
+    private void UpdateTimers()
+    {
+        foreach (Timer t in Timer.timers)
+        {
+            t.TickTimer(Time.deltaTime);
+        }
+    }
+
     public enum Team
     {
         Player = 0,

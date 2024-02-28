@@ -7,13 +7,13 @@ public class Slot : MonoBehaviour, IDropHandler
 {
     public Draggable droppedObject;
 
-    public delegate void DropEvent();
+    public delegate void DropEvent(Draggable d);
 
     public event DropEvent OnDropEvent;
 
-    protected void InvokeDropEvent()
+    protected void InvokeDropEvent(Draggable d = null)
     {
-        OnDropEvent?.Invoke();
+        OnDropEvent?.Invoke(d);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -25,6 +25,9 @@ public class Slot : MonoBehaviour, IDropHandler
                 droppedObject.slot.droppedObject = null;
             droppedObject.inSlot = true;
             droppedObject.slot = this;
+            InvokeDropEvent(droppedObject);
+            return;
         }
+        InvokeDropEvent();
     }
 }
