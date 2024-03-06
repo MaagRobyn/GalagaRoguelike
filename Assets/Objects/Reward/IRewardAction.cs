@@ -22,7 +22,7 @@ namespace Assets.Objects.Reward
         public ScriptableCannon cannon;
         public void GiveReward(PlayerScript player, int factor = 0)
         {
-            player.cannons[factor].cannon = cannon;
+            player.cannons[factor].EquipCannon(cannon);
         }
     }
 }

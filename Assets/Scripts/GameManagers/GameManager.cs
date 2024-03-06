@@ -272,8 +272,8 @@ public class GameManager : MonoBehaviour
             slot.name = $"Cannon Slot {i + 1}";
             if (cannonSlot.isSlotFilled)
             {
-                AddDraggable(position, cannonSlot.cannon.projectile.sprite).name = 
-                    $"{cannonSlot.cannon.projectile.name}";
+                AddDraggable(position, cannonSlot.GetCannonData().projectile.sprite).name = 
+                    $"{cannonSlot.GetCannonData().projectile.name}";
 
             }
             slot.OnDropEvent += d =>
@@ -293,10 +293,11 @@ public class GameManager : MonoBehaviour
         var slot = Instantiate(slotPrefab, parent);
         slot.GetComponent<RectTransform>().localPosition = position;
         var data = slot.GetComponent<SlotData>();
-        data.Title = reward.cannon.name;
-        data.Subtitle = $"DPS: {reward.cannon.cannonDamageMult * (reward.cannon.cannonDamageMod + reward.cannon.projectile.baseDamage)}" +
-            $"\nVelocity: {reward.cannon.cannonVelocityMult * (reward.cannon.cannonVelocityMod + reward.cannon.projectile.baseVelocity)}" +
-            $"\nFire Rate {reward.cannon.fireRate}";
+        var cannonData = reward.GetCannonData();
+        data.Title = cannonData.name;
+        data.Subtitle = $"DPS: {cannonData.cannonDamageMult * (cannonData.cannonDamageMod + cannonData.projectile.baseDamage)}" +
+            $"\nVelocity: {cannonData.cannonVelocityMult * (cannonData.cannonVelocityMod + cannonData.projectile.baseVelocity)}" +
+            $"\nFire Rate {cannonData.fireRate}";
         return slot;
     }
 

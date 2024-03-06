@@ -23,14 +23,19 @@ public class PlayerScript : ShipScript
     public List<Reward> obtainedRewards = new();
     public Queue<Reward> newRewards = new();
     public List<CrewMember> crewMembers = new();
+    [SerializeField] ScriptableCannon defaultCannon;
 
     float respawnTimer = 5;
+
+    int[] testArr = new int[2];
+    int a = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         //Static Camera
         healthbar.value = health;
+        cannons[2].EquipCannon(defaultCannon);
     }
 
     // Update is called once per frame
@@ -49,6 +54,8 @@ public class PlayerScript : ShipScript
             Application.Quit();
         }
 
+        CannonSlotSwap();
+
         if (!playerSprite.enabled)
         {
             if (respawnTimer <= 0)
@@ -61,9 +68,9 @@ public class PlayerScript : ShipScript
             }
         }
 
-        foreach(var r in obtainedRewards)
+        foreach (var r in obtainedRewards)
         {
-            if(r.isContinuous)
+            if (r.isContinuous)
             {
                 r.action.GiveReward(this);
             }
@@ -74,13 +81,61 @@ public class PlayerScript : ShipScript
             FireCannons();
         }
         Reward reward;
-        while(newRewards.TryDequeue(out reward))
+        while (newRewards.TryDequeue(out reward))
         {
             obtainedRewards.Add(reward);
             reward.action.GiveReward(this);
         }
     }
 
+    private void CannonSlotSwap()
+    {
+        if (Input.GetKeyUp(KeyCode.Alpha3) && testArr[(a + 1) % 2] != 3)
+        {
+            testArr[a % 2] = 3;
+            if (a % 2 == 1)
+            {
+                SwapWeaponSlots(testArr[a % testArr.Length], testArr[(a + 1) % testArr.Length]);
+            }
+            a++;
+        }
+        else if (Input.GetKeyUp(KeyCode.Alpha2) && testArr[(a + 1) % 2] != 2)
+        {
+            testArr[a % 2] = 2;
+            if (a % 2 == 1)
+            {
+                SwapWeaponSlots(testArr[a % testArr.Length], testArr[(a + 1) % testArr.Length]);
+            }
+            a++;
+        }
+        else if (Input.GetKeyUp(KeyCode.Alpha4) && testArr[(a + 1) % 2] != 4)
+        {
+            testArr[a % 2] = 4;
+            if (a % 2 == 1)
+            {
+                SwapWeaponSlots(testArr[a % testArr.Length], testArr[(a + 1) % testArr.Length]);
+            }
+            a++;
+        }
+        else if (Input.GetKeyUp(KeyCode.Alpha1) && testArr[(a + 1) % 2] != 1)
+        {
+            testArr[a % 2] = 1;
+            if (a % 2 == 1)
+            {
+                SwapWeaponSlots(testArr[a % testArr.Length], testArr[(a + 1) % testArr.Length]);
+            }
+            a++;
+        }
+        else if (Input.GetKeyUp(KeyCode.Alpha5) && testArr[(a + 1) % 2] != 5)
+        {
+            testArr[a % 2] = 5;
+            if (a % 2 == 1)
+            {
+                SwapWeaponSlots(testArr[a % testArr.Length], testArr[(a + 1) % testArr.Length]);
+            }
+            a++;
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -121,6 +176,13 @@ public class PlayerScript : ShipScript
             //rb.SetRotation(Tools.FindAngleBetweenTwoPositions(transform.position, mousePosition));
         }
 
+    }
+
+    private void SwapWeaponSlots(int firstIndex, int secondIndex)
+    {
+        var tmp = cannons[firstIndex].GetCannonData();
+        cannons[firstIndex].EquipCannon(cannons[secondIndex].GetCannonData());
+        cannons[secondIndex].EquipCannon(tmp);
     }
 
     public override void TakeDamage(float damage)

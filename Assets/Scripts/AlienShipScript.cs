@@ -26,7 +26,7 @@ public class AlienShipScript : ShipScript
         speed = alienType.speed;
         for(int i = 0; i < cannons.Count && i < alienType.cannons.Count; i++)
         {
-            cannons[i].cannon = alienType.cannons[i];
+            cannons[i].EquipCannon(alienType.cannons[i]);
             
         }
         health = alienType.health;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static GameManager;
@@ -8,7 +9,8 @@ public class CannonSlotScript : IdentifiableBehavior
 {
 
     private ScriptableProjectile Projectile;
-    public ScriptableCannon cannon;
+    private ScriptableCannon cannon;
+    [SerializeField] Slot associatedSlot;
 
     public bool isSlotFilled = false;
     public bool isReadyToFire = false;
@@ -21,7 +23,6 @@ public class CannonSlotScript : IdentifiableBehavior
 
     public delegate void CannonEquip(ScriptableCannon c);
     public event CannonEquip OnCannonEquipped;
-    private float fireTimer;
 
     protected virtual void InvokeCannonEquip(ScriptableCannon cannon)
     {
@@ -54,30 +55,8 @@ public class CannonSlotScript : IdentifiableBehavior
                 Debug.LogError("Attempted to equip a null cannon");
             }
         };
+        EquipCannon(cannon);
     }
-    private void Update()
-    {
-        if (cannon != null)
-        {
-            if(!isSlotFilled )
-            {
-                EquipCannon(cannon);
-
-            }
-            else
-            {
-                if (fireTimer > 0)
-                {
-                    fireTimer -= Time.deltaTime;
-                }
-                else if(!isReadyToFire)
-                {
-                    isReadyToFire = true;
-                }
-            }
-        }
-    }
-
     /// <summary>
     /// Fires the projectile from the cannon
     /// </summary>
@@ -98,12 +77,38 @@ public class CannonSlotScript : IdentifiableBehavior
             projectileScript.SetDamage(damageMult * cannonDamageMult, damageMod + cannonDamageMod);
             projectileScript.SetVelocity(velocityMult * cannonVelocityMult, velocityMod + cannonVelocityMod);
             isReadyToFire = false;
-            fireTimer = fireRate;
+            var t = Timer.AddTimer(fireRate);
+            t.OnTimerEnd += () =>
+            {
+                isReadyToFire = true;
+            };
         }
     }
     public void EquipCannon(ScriptableCannon newCannon)
     {
         cannon = newCannon;
-        InvokeCannonEquip(newCannon);
+        if(associatedSlot != null)
+            PopulateSlotData();
+        if (cannon != null)
+            InvokeCannonEquip(newCannon);
+    }
+    public ScriptableCannon GetCannonData() { return cannon; }
+
+
+    private void PopulateSlotData()
+    {
+        var textArr = associatedSlot.GetComponentsInChildren<TextMeshProUGUI>();
+        if(cannon != null)
+        {
+            textArr[0].text = cannon.name;
+            textArr[1].text = cannon.projectile.name;
+
+        }
+        else
+        {
+            textArr[0].text = "";
+            textArr[1].text = "";
+
+        }
     }
 }
