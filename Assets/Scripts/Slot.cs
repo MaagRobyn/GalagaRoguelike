@@ -26,5 +26,6 @@ public class Slot : MonoBehaviour, IDropHandler
             droppedObject.inSlot = true;
             droppedObject.slot = this;
         }
+        InvokeDropEvent();
     }
 }
