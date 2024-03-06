@@ -4,8 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static GameManager;
 
-public class CannonSlotScript : MonoBehaviour
+public class CannonSlotScript : IdentifiableBehavior
 {
+
     private ScriptableProjectile Projectile;
     public ScriptableCannon cannon;
 
@@ -27,21 +28,30 @@ public class CannonSlotScript : MonoBehaviour
         OnCannonEquipped?.Invoke(cannon);
     }
 
+    private void Awake()
+    {
+        Id = ++LastID;
+    }
+
     private void Start()
     {
         isSlotFilled = false;
-        OnCannonEquipped += (c) =>
+        OnCannonEquipped += c =>
         {
-            if(cannon != null && !isSlotFilled)
+            if(c != null)
             {
                 isSlotFilled = true;
-                cannonDamageMult = cannon.cannonDamageMult;
-                cannonVelocityMult = cannon.cannonVelocityMult;
-                cannonDamageMod = cannon.cannonDamageMod;
-                cannonVelocityMod = cannon.cannonVelocityMod;
-                fireRate = cannon.fireRate;
-                GetComponent<SpriteRenderer>().sprite = cannon.sprite;
-                Projectile = cannon.projectile;
+                cannonDamageMult = c.cannonDamageMult;
+                cannonVelocityMult = c.cannonVelocityMult;
+                cannonDamageMod = c.cannonDamageMod;
+                cannonVelocityMod = c.cannonVelocityMod;
+                fireRate = c.fireRate;
+                GetComponent<SpriteRenderer>().sprite = c.sprite;
+                Projectile = c.projectile;
+            }
+            else
+            {
+                Debug.LogError("Attempted to equip a null cannon");
             }
         };
     }
@@ -49,7 +59,7 @@ public class CannonSlotScript : MonoBehaviour
     {
         if (cannon != null)
         {
-            if(!isSlotFilled)
+            if(!isSlotFilled )
             {
                 EquipCannon(cannon);
 
