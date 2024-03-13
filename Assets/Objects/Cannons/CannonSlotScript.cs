@@ -13,7 +13,7 @@ public class CannonSlotScript : IdentifiableBehavior
     [SerializeField] Slot associatedSlot;
 
     public bool isSlotFilled = false;
-    public bool isReadyToFire = false;
+    public bool isReadyToFire = true;
 
     float cannonDamageMult;
     float cannonVelocityMult;

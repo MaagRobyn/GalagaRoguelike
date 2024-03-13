@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   associatedSlot: {fileID: 1229810877}
   isSlotFilled: 0
-  isReadyToFire: 0
+  isReadyToFire: 1
 --- !u!212 &1128915827
 SpriteRenderer:
   m_ObjectHideFlags: 0
