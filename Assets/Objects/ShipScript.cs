@@ -25,10 +25,10 @@ public abstract class ShipScript : MonoBehaviour
         {
             if (cannon != null && cannon.isSlotFilled && cannon.isReadyToFire)
                 cannon.ShootProjectile(
-                    team, 
-                    shipProjectileDamageMult, 
-                    shipProjectileVelocityMult, 
-                    shipProjectileDamageMod, 
+                    team,
+                    shipProjectileDamageMult,
+                    shipProjectileVelocityMult,
+                    shipProjectileDamageMod,
                     shipProjectileVelocityMod
                 );
         }

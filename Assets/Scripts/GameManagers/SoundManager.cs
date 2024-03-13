@@ -13,12 +13,12 @@ namespace Assets
         private float MasterVolume = 1;
         private float SoundVolume = 1;
         private float MusicVolume = 1;
-        public SoundManager() 
+        public SoundManager()
         {
             Instance = this;
         }
 
-        public void SetVolume(int volume, SoundType type = SoundType.Master) 
+        public void SetVolume(int volume, SoundType type = SoundType.Master)
         {
             switch (type)
             {
@@ -61,9 +61,9 @@ namespace Assets
                 _ => 1.0f
             };
             // If the volume would be more than 1.0f, set it to 1.0f
-            sound.volume = 
-                volumeModifier * MasterVolume * volumeTypeMod <= 1.0f 
-                ? volumeModifier * MasterVolume * volumeTypeMod 
+            sound.volume =
+                volumeModifier * MasterVolume * volumeTypeMod <= 1.0f
+                ? volumeModifier * MasterVolume * volumeTypeMod
                 : 1.0f;
             sound.Play();
         }

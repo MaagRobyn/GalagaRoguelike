@@ -10,7 +10,7 @@ public class Globals
     /// Add this to the Team enum to get which layer the bullet belongs to
     /// </summary>
     public const int BULLET_TEAM_LAYER_NUM = 9;
-    
+
     public static int gravityScale = 1;
 
     public static Bounds PlayerBounds;

@@ -24,13 +24,13 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        if(SoundManager.Instance == null)
+        if (SoundManager.Instance == null)
         {
             SoundManager soundManager = new();
             soundManager.SetVolume(100);
         }
         volumeSlider.value = SoundManager.Instance.GetVolume();
-        
+
         newGameButton.onClick.AddListener(() =>
         {
             newGameMenu.SetActive(true);

@@ -168,11 +168,11 @@ public class PlayerScript : ShipScript
 
             //Non-static Camera
             rb.SetRotation(rb.rotation + -rotation * rotationSpeed);
-            
+
             // Static Camera
             //var mousePosition = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
             //Debug.Log(mousePosition);
-            
+
             //rb.SetRotation(Tools.FindAngleBetweenTwoPositions(transform.position, mousePosition));
         }
 

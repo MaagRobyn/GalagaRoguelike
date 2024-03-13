@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private readonly List<ShipScript> existingShips = new();
     public float bounty = 0;
     private EncounterType encounterType;
-    
+
     [Header("Debug")]
     [SerializeField] private bool useDebugSettings;
     [SerializeField] private float debugBounty = 0.0f;
@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateTimers();
-        
+
         // If the death event has been created but the player exists, create the death event
         if (!playerDeathEventHasBeenSet && Player != null)
         {
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
             };
         }
 
-        if(!playerHasDied)
+        if (!playerHasDied)
         {
             if (!roundHasEnded)
             {
@@ -163,7 +163,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if(encounterType == EncounterType.Endless)
+                if (encounterType == EncounterType.Endless)
                 {
 
                     if (postRoundTimer > 0)
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
                 }
                 roundHasEnded = false;
 
-                if(reward.GetType() == typeof(CannonReward))
+                if (reward.GetType() == typeof(CannonReward))
                 {
                     ShowCannonRewardMenu();
 
@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
             slot.name = $"Cannon Slot {i + 1}";
             if (cannonSlot.isSlotFilled)
             {
-                AddDraggable(position, cannonSlot.GetCannonData().projectile.sprite).name = 
+                AddDraggable(position, cannonSlot.GetCannonData().projectile.sprite).name =
                     $"{cannonSlot.GetCannonData().projectile.name}";
 
             }
@@ -321,7 +321,7 @@ public class GameManager : MonoBehaviour
         var randomNum = Random.Range(-10, 10);
         var alienShip = Instantiate(shipToSpawn);
         alienShip.transform.SetPositionAndRotation(transform.position + new Vector3(randomNum, 10), transform.rotation);
-        
+
         var radarObj = Instantiate(radar, radarHolder);
         radarObj.matchingObject = alienShip.gameObject;
         spawnDelay = 1.0f;

@@ -8,7 +8,7 @@ public class ProjectileScript : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
     ScriptableProjectile properties;
-    
+
     private int damage;
     private float velocity;
     private Quaternion initialRotation;
@@ -31,7 +31,7 @@ public class ProjectileScript : MonoBehaviour
     }
     private void Update()
     {
-        if(rb.velocity.magnitude < velocity)
+        if (rb.velocity.magnitude < velocity)
         {
             //Debug.Log($"{rb.velocity.magnitude} vs {velocity}");
             MoveProjectile(velocity - rb.velocity.magnitude);
@@ -59,9 +59,9 @@ public class ProjectileScript : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<ShipScript>(out var ship))
         {
-            if((int)ship.team != gameObject.layer - Globals.BULLET_TEAM_LAYER_NUM)
+            if ((int)ship.team != gameObject.layer - Globals.BULLET_TEAM_LAYER_NUM)
             {
-                ship.TakeDamage(damage); 
+                ship.TakeDamage(damage);
                 //Lasers pass through objects, but still damage them
                 if (properties.element != ScriptableProjectile.ProjectileElement.Laser)
                 {
@@ -81,7 +81,7 @@ public class ProjectileScript : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
-        else if(collision.gameObject.TryGetComponent<CrateScript>(out var reward))
+        else if (collision.gameObject.TryGetComponent<CrateScript>(out var reward))
         {
             reward.TakeDamage(damage);
             //Lasers pass through objects, but still damage them
@@ -93,7 +93,8 @@ public class ProjectileScript : MonoBehaviour
             {
                 MoveProjectile();
             }
-        }else
+        }
+        else
         {
             Debug.Log(collision.gameObject.name);
         }

@@ -27,7 +27,7 @@ public class CrateScript : MonoBehaviour
     {
         Debug.Log($"Health: {health}, Damage: {damage}");
         health -= damage;
-        if(health < 0)
+        if (health < 0)
         {
             statusBar.color = Color.black;
             health = int.MaxValue;

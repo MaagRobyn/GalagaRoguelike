@@ -18,11 +18,11 @@ public class SlotData : MonoBehaviour
     }
     private void Update()
     {
-        if(titleTextBox.text != Title)
+        if (titleTextBox.text != Title)
         {
             titleTextBox.text = Title;
         }
-        if(subtitleTextBox.text != Subtitle)
+        if (subtitleTextBox.text != Subtitle)
         {
             subtitleTextBox.text = Subtitle;
         }

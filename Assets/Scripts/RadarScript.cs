@@ -16,7 +16,7 @@ namespace Assets.Scripts
         {
             radar = GetComponentInChildren<Image>();
             RotateTowardsTarget();
- 
+
         }
 
         private void FixedUpdate()

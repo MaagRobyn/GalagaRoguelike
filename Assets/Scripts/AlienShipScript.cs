@@ -24,10 +24,10 @@ public class AlienShipScript : ShipScript
     void Start()
     {
         speed = alienType.speed;
-        for(int i = 0; i < cannons.Count && i < alienType.cannons.Count; i++)
+        for (int i = 0; i < cannons.Count && i < alienType.cannons.Count; i++)
         {
             cannons[i].EquipCannon(alienType.cannons[i]);
-            
+
         }
         health = alienType.health;
         shipProjectileDamageMod = alienType.damageMod;
@@ -52,7 +52,7 @@ public class AlienShipScript : ShipScript
     // Update is called once per frame
     void Update()
     {
-        if(flightPattern == FlightPattern.Chase)
+        if (flightPattern == FlightPattern.Chase)
         {
             FireCannons();
 
@@ -70,18 +70,18 @@ public class AlienShipScript : ShipScript
                     return;
                 }
                 break;
-            //case FlightPattern.Wander:
-            //    if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
-            //    {
-            //        var x = UnityEngine.Random.Range(-1000, 1000);
-            //        var y = UnityEngine.Random.Range(-1000, 1000);
-            //        var z = UnityEngine.Random.Range(-1000, 1000);
-            //        destinationCoordinates = new Vector3(x, y, z);
-            //    }
-            //    break;
-            //case FlightPattern.Cruise:
-            //    rb.AddForce(Tools.GetUnitVector2(rb.rotation));
-            //    return;
+                //case FlightPattern.Wander:
+                //    if (Vector3.Distance(transform.position, destinationCoordinates) <= 1)
+                //    {
+                //        var x = UnityEngine.Random.Range(-1000, 1000);
+                //        var y = UnityEngine.Random.Range(-1000, 1000);
+                //        var z = UnityEngine.Random.Range(-1000, 1000);
+                //        destinationCoordinates = new Vector3(x, y, z);
+                //    }
+                //    break;
+                //case FlightPattern.Cruise:
+                //    rb.AddForce(Tools.GetUnitVector2(rb.rotation));
+                //    return;
         }
         GoToTarget(destinationCoordinates);
         RotateTowardsTarget(destinationCoordinates);

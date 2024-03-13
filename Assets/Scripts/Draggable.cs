@@ -34,7 +34,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         if (mustFitInSlot)
         {
-            if(!inSlot)
+            if (!inSlot)
                 transform.position = startPosition;
             inSlot = true;
         }

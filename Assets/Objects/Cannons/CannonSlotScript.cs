@@ -39,7 +39,7 @@ public class CannonSlotScript : IdentifiableBehavior
         isSlotFilled = false;
         OnCannonEquipped += c =>
         {
-            if(c != null)
+            if (c != null)
             {
                 isSlotFilled = true;
                 cannonDamageMult = c.cannonDamageMult;
@@ -87,7 +87,7 @@ public class CannonSlotScript : IdentifiableBehavior
     public void EquipCannon(ScriptableCannon newCannon)
     {
         cannon = newCannon;
-        if(associatedSlot != null)
+        if (associatedSlot != null)
             PopulateSlotData();
         if (cannon != null)
             InvokeCannonEquip(newCannon);
@@ -98,7 +98,7 @@ public class CannonSlotScript : IdentifiableBehavior
     private void PopulateSlotData()
     {
         var textArr = associatedSlot.GetComponentsInChildren<TextMeshProUGUI>();
-        if(cannon != null)
+        if (cannon != null)
         {
             textArr[0].text = cannon.name;
             textArr[1].text = cannon.projectile.name;
