@@ -36,6 +36,15 @@ public class PlayerScript : ShipScript
         //Static Camera
         healthbar.value = health;
         cannons[2].EquipCannon(defaultCannon);
+        OnPlayerDeath += () =>
+        {
+            var loadTimer = Timer.AddTimer(respawnTimer);
+            loadTimer.OnTimerEnd += () =>
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            };
+        };
     }
 
     // Update is called once per frame
@@ -55,18 +64,6 @@ public class PlayerScript : ShipScript
         }
 
         CannonSlotSwap();
-
-        if (!playerSprite.enabled)
-        {
-            if (respawnTimer <= 0)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-            else
-            {
-                respawnTimer -= Time.deltaTime;
-            }
-        }
 
         foreach (var r in obtainedRewards)
         {

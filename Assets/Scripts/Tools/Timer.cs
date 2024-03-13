@@ -6,10 +6,10 @@ public class Timer
 {
     public static List<Timer> timers = new();
 
-    public float time { get; set; }
-    public bool repeating { get; set; }
-    public bool active { get; set; }
-    private float maxTimer { get; set; }
+    public float Time { get; private set; }
+    public bool Repeating { get; private set; }
+    public bool Active { get; private set; }
+    private float MaxTimer { get; set; }
 
     public delegate void TimerEnd();
     public event TimerEnd OnTimerEnd;
@@ -18,10 +18,10 @@ public class Timer
     {
         var timer = new Timer()
         {
-            maxTimer = time,
-            time = time,
-            repeating = repeating,
-            active = true
+            MaxTimer = time,
+            Time = time,
+            Repeating = repeating,
+            Active = true
         };
         timers.Add(timer);
         return timer;
@@ -32,22 +32,22 @@ public class Timer
     }
     public void TickTimer(float time)
     {
-        if (!active)
+        if (!Active)
             return;
 
-        this.time -= time;
+        this.Time -= time;
 
-        if (this.time > 0)
+        if (this.Time > 0)
             return;
 
         EndTimer();
-        if (repeating)
+        if (Repeating)
         {
-            this.time = maxTimer;
+            this.Time = MaxTimer;
         }
         else
         {
-            this.active = false;
+            this.Active = false;
         }
     }
 }

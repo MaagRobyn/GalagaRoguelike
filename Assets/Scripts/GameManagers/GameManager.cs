@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     int roundCount = 1;
 
     // Timers
-    float postRoundTimer = 5.0f;
+    float postRoundTimerTime = 5.0f;
     float spawnDelay = 1.0f;
     float deathScreenTimer = 3.0f;
 
@@ -104,6 +104,12 @@ public class GameManager : MonoBehaviour
             Player.OnPlayerDeath += () =>
             {
                 playerHasDied = true;
+                var dsT = Timer.AddTimer(deathScreenTimer);
+                dsT.OnTimerEnd += () =>
+                {
+                    deathscreen.SetActive(true);
+                };
+
             };
         }
 
@@ -144,7 +150,15 @@ public class GameManager : MonoBehaviour
                     {
                         case EncounterType.Endless:
                             spawnDelay = 1.0f;
-                            postRoundTimer = 5.0f;
+                            var postRoundTimer = Timer.AddTimer(postRoundTimerTime);
+                            postRoundTimer.OnTimerEnd += () =>
+                            {
+                                roundHasEnded = false;
+                                if (roundCounterScreen.activeSelf)
+                                {
+                                    roundCounterScreen.SetActive(false);
+                                }
+                            };
                             roundBounty = 1.0f;
                             AddBounty(roundBounty);
                             roundCounterText.text = $"Round {roundCount} completed\nBounty Gained: ${roundBounty * 10}00";
@@ -161,44 +175,6 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                if (encounterType == EncounterType.Endless)
-                {
-
-                    if (postRoundTimer > 0)
-                    {
-                        postRoundTimer -= Time.deltaTime;
-                    }
-                    // Display Score
-                    else if (postRoundTimer < 0)
-                    {
-                        postRoundTimer = 5.0f;
-                        roundHasEnded = false;
-                        if (roundCounterScreen.activeSelf)
-                        {
-                            roundCounterScreen.SetActive(false);
-
-                        }
-                    }
-                }
-                // Tick postRoundTimer
-
-            }
-        }
-        else
-        {
-            // Player Died, and deathscreen hasn't shown up
-            if (deathScreenTimer > 0)
-            {
-                deathScreenTimer -= Time.deltaTime;
-            }
-            // Player Died and we see death screen
-            else if (deathScreenTimer < 0)
-            {
-                deathscreen.SetActive(true);
-            }
-
         }
 
         // If we've reached the maxEnemeies for the area, the round can end
